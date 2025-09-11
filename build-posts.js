@@ -80,15 +80,30 @@ const postTemplate = (post) => `
 
 
 // Generate index.html with posts included for SEO
-async function generateIndexWithPosts(posts) {
+async function generateIndexWithPosts(featuredPosts, regularPosts) {
   try {
     console.log('Generating index.html with posts...')
     
     // Read the current index.html
     let indexContent = fs.readFileSync('index.html', 'utf8')
     
-    // Generate posts HTML
-    const postsHtml = posts.map(post => `
+    // Generate featured post HTML
+    let featuredHtml = ''
+    if (featuredPosts.length > 0) {
+      const post = featuredPosts[0] // Show only the first featured post
+      featuredHtml = `
+        <article class="border-b-2 border-black pb-8 mb-8">
+            <div class="text-sm text-black mb-2 font-['Space_Mono']">Featured</div>
+            <h1 class="text-2xl font-normal text-black mb-3 font-['Space_Mono']">
+                <a href="post-${post.slug}.html" class="hover:underline">${post.title}</a>
+            </h1>
+            <div class="text-black mb-4 font-['Space_Mono']">${new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} • jed</div>
+            <div class="text-black leading-relaxed font-['Inter']">${post.excerpt || post.content.substring(0, 200) + '...'}</div>
+        </article>`
+    }
+    
+    // Generate regular posts HTML
+    const postsHtml = regularPosts.map(post => `
         <article class="border-b border-black pb-8">
             <h2 class="text-xl font-normal text-black mb-2 font-['Space_Mono']">
                 <a href="post-${post.slug}.html" class="hover:underline">${post.title}</a>
@@ -97,6 +112,12 @@ async function generateIndexWithPosts(posts) {
             <div class="text-black leading-relaxed font-['Inter'] text-sm">${post.excerpt || post.content.substring(0, 150) + '...'}</div>
         </article>
     `).join('')
+    
+    // Replace the featured post container
+    indexContent = indexContent.replace(
+      '<div id="featured-post" class="mb-12">\n            <!-- Featured post will be loaded here -->\n        </div>',
+      `<div id="featured-post" class="mb-12">\n            ${featuredHtml}\n        </div>`
+    )
     
     // Replace the posts container with actual content
     indexContent = indexContent.replace(
@@ -112,7 +133,7 @@ async function generateIndexWithPosts(posts) {
     
     // Write the updated index.html
     fs.writeFileSync('index.html', indexContent)
-    console.log('Updated: index.html with posts')
+    console.log('Updated: index.html with featured and regular posts')
     
   } catch (error) {
     console.error('Error generating index with posts:', error)
@@ -129,12 +150,16 @@ async function generateStaticPosts() {
       .select('*')
       .order('created_at', { ascending: false })
     
+    // Separate featured and regular posts
+    const featuredPosts = posts.filter(post => post.featured === true)
+    const regularPosts = posts.filter(post => post.featured === false)
+    
     if (error) throw error
     
     console.log(`Found ${posts.length} posts`)
     
     // Generate index.html with posts included for SEO
-    await generateIndexWithPosts(posts)
+    await generateIndexWithPosts(featuredPosts, regularPosts)
     
     // Generate HTML file for each post
     for (const post of posts) {
