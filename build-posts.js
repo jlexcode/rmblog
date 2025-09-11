@@ -149,7 +149,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
         
         <header class="mb-12">
             <h1 class="text-3xl font-normal text-black font-['Space_Mono']">
-                <span id="title-text">Reasonable Machines</span>
+                <span id="title-text"></span>
             </h1>
         </header>
 
