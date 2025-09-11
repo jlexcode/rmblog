@@ -84,8 +84,8 @@ async function generateIndexWithPosts(featuredPosts, regularPosts) {
   try {
     console.log('Generating index.html with posts...')
     
-    // Read the current index.html
-    let indexContent = fs.readFileSync('index.html', 'utf8')
+    // Read the clean template
+    let indexContent = fs.readFileSync('templates/index-template.html', 'utf8')
     
     // Generate featured post HTML
     let featuredHtml = ''
@@ -142,9 +142,14 @@ async function generateIndexWithPosts(featuredPosts, regularPosts) {
       ''
     )
     
+    // Validate the generated content
+    if (!indexContent.includes('Reasonable Machines') || !indexContent.includes('featured-post')) {
+      throw new Error('Generated content appears to be invalid')
+    }
+    
     // Write the updated index.html
     fs.writeFileSync('index.html', indexContent)
-    console.log('Updated: index.html with featured and regular posts')
+    console.log('✅ Updated: index.html with featured and regular posts')
     
   } catch (error) {
     console.error('Error generating index with posts:', error)
@@ -179,10 +184,10 @@ async function generateStaticPosts() {
       const html = postTemplate(post)
       
       fs.writeFileSync(filename, html)
-      console.log(`Generated: ${filename}`)
+      console.log(`✅ Generated: ${filename}`)
     }
     
-    console.log('Static generation complete!')
+    console.log('🎉 Static generation complete!')
     
   } catch (error) {
     console.error('Error generating static posts:', error)
