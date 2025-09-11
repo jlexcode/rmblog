@@ -13,6 +13,17 @@ const errorElement = document.getElementById('error')
 // Load posts from Supabase
 async function loadPosts() {
     try {
+        // Check if content already exists (from static generation)
+        const hasFeaturedContent = featuredContainer.innerHTML.trim() !== ''
+        const hasPostsContent = postsContainer.innerHTML.trim() !== '' && !postsContainer.innerHTML.includes('Loading...')
+        
+        if (hasFeaturedContent && hasPostsContent) {
+            console.log('Static content already exists, skipping Supabase calls')
+            loadingElement.classList.add('hidden')
+            errorElement.classList.add('hidden')
+            return
+        }
+        
         loadingElement.classList.remove('hidden')
         errorElement.classList.add('hidden')
         
