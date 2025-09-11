@@ -117,24 +117,22 @@ async function generateIndexWithPosts(featuredPosts, regularPosts) {
         </article>
     `).join('')
     
-    // Replace the featured post container (handle both empty and filled states)
+    // Replace the featured post container
     if (featuredHtml) {
-      // If there's a featured post, replace the entire featured-post div content
       indexContent = indexContent.replace(
-        /<div id="featured-post" class="mb-12">[\s\S]*?<\/div>/,
+        '<div id="featured-post" class="mb-12">\n            <!-- Featured post will be loaded here -->\n        </div>',
         `<div id="featured-post" class="mb-12">\n            ${featuredHtml}\n        </div>`
       )
     } else {
-      // If no featured post, clear the container
       indexContent = indexContent.replace(
-        /<div id="featured-post" class="mb-12">[\s\S]*?<\/div>/,
+        '<div id="featured-post" class="mb-12">\n            <!-- Featured post will be loaded here -->\n        </div>',
         '<div id="featured-post" class="mb-12">\n            <!-- No featured posts -->\n        </div>'
       )
     }
     
-    // Replace the posts container with actual content (handle both empty and filled states)
+    // Replace the posts container with actual content
     indexContent = indexContent.replace(
-      /<div id="posts" class="space-y-8">[\s\S]*?<\/div>/,
+      '<div id="posts" class="space-y-8">\n            <!-- Regular posts will be loaded here -->\n        </div>',
       `<div id="posts" class="space-y-8">\n            ${postsHtml}\n        </div>`
     )
     
@@ -166,6 +164,7 @@ async function generateStaticPosts() {
     // Separate featured and regular posts
     const featuredPosts = posts.filter(post => post.featured === true)
     const regularPosts = posts.filter(post => post.featured === false)
+    
     
     if (error) throw error
     
