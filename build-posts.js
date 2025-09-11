@@ -169,10 +169,10 @@ async function generateStaticPosts() {
     
     console.log(`Found ${posts.length} posts`)
     
-    // Generate static index page
+    // Generate static index page for SEO (search engines)
     const indexHtml = indexTemplate(posts)
-    fs.writeFileSync('index-static.html', indexHtml)
-    console.log('Generated: index-static.html')
+    fs.writeFileSync('index-seo.html', indexHtml)
+    console.log('Generated: index-seo.html')
     
     // Generate HTML file for each post
     for (const post of posts) {

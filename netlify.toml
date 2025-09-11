@@ -1,3 +1,10 @@
 [build]
   command = "npm run build"
   publish = "."
+
+# Redirect search engine bots to SEO version
+[[redirects]]
+  from = "/"
+  to = "/index-seo.html"
+  status = 200
+  conditions = {User-Agent = "Googlebot|Bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|facebookexternalhit|Twitterbot|LinkedInBot|WhatsApp|SkypeUriPreview"}
