@@ -147,7 +147,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
     <div class="max-w-2xl mx-auto px-4 py-8">
         <div id="header"></div>
         
-        <header class="mb-12">
+        <header class="mb-12 text-center">
             <h1 class="text-3xl font-normal text-black font-['Space_Mono']">
                 <span id="title-text"></span>
             </h1>
