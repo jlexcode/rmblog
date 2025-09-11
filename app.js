@@ -10,6 +10,15 @@ const featuredContainer = document.getElementById('featured-post')
 const loadingElement = document.getElementById('loading')
 const errorElement = document.getElementById('error')
 
+// Helper function to safely hide/show elements
+function safeHide(element) {
+    if (element) element.classList.add('hidden')
+}
+
+function safeShow(element) {
+    if (element) element.classList.remove('hidden')
+}
+
 // Load posts from Supabase
 async function loadPosts() {
     try {
@@ -23,15 +32,15 @@ async function loadPosts() {
         
         if (hasFeaturedContent && hasPostsContent) {
             console.log('Static content already exists, skipping Supabase calls')
-            loadingElement.classList.add('hidden')
-            errorElement.classList.add('hidden')
+            safeHide(loadingElement)
+            safeHide(errorElement)
             return
         }
         
         // If we don't have static content, try to load from Supabase
         console.log('No static content found, loading from Supabase...')
-        loadingElement.classList.remove('hidden')
-        errorElement.classList.add('hidden')
+        safeShow(loadingElement)
+        safeHide(errorElement)
         
         // Load featured posts
         const { data: featuredData, error: featuredError } = await supabaseClient
@@ -58,7 +67,7 @@ async function loadPosts() {
         console.error('Error loading posts:', error)
         showError()
     } finally {
-        loadingElement.classList.add('hidden')
+        safeHide(loadingElement)
     }
 }
 
@@ -147,7 +156,7 @@ function formatDate(dateString) {
 
 // Show error message
 function showError() {
-    errorElement.classList.remove('hidden')
+    safeShow(errorElement)
 }
 
 // Random letter resolution effect
