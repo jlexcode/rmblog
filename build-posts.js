@@ -104,27 +104,12 @@ const indexTemplate = (posts) => `
     <meta property="twitter:description" content="A blog by Jed Stiglitz exploring law, AI, social science, and organizations. Professor at Cornell University and director of Cornell's Center on Law and AI.">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://reasonablemachines.io/">
+    <link rel="canonical" href="https://reasonablemachines.io/index.html">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
-    <style>
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        #cursor {
-            animation: blink 1s infinite;
-            display: inline-block;
-            width: 0.5em;
-            text-align: left;
-        }
-        #cursor.hidden {
-            color: white;
-        }
-    </style>
 </head>
 <body class="bg-white text-black font-sans">
     <div class="max-w-2xl mx-auto px-4 py-8">
@@ -132,7 +117,7 @@ const indexTemplate = (posts) => `
         
         <header class="mb-12 text-center">
             <h1 class="text-3xl font-normal text-black font-['Space_Mono']">
-                <span id="typewriter-text">Reasonable Machines</span><span id="cursor">|</span>
+                Reasonable Machines
             </h1>
             <p class="text-black mt-2 font-['Space_Mono']">Notes on law/democracy/bureaucracy/tech/etc</p>
         </header>
