@@ -17,6 +17,10 @@ async function loadPosts() {
         const hasFeaturedContent = featuredContainer.innerHTML.trim() !== ''
         const hasPostsContent = postsContainer.innerHTML.trim() !== '' && !postsContainer.innerHTML.includes('Loading...')
         
+        console.log('Content check:', { hasFeaturedContent, hasPostsContent })
+        console.log('Featured content:', featuredContainer.innerHTML.substring(0, 100))
+        console.log('Posts content:', postsContainer.innerHTML.substring(0, 100))
+        
         if (hasFeaturedContent && hasPostsContent) {
             console.log('Static content already exists, skipping Supabase calls')
             loadingElement.classList.add('hidden')
@@ -24,6 +28,8 @@ async function loadPosts() {
             return
         }
         
+        // If we don't have static content, try to load from Supabase
+        console.log('No static content found, loading from Supabase...')
         loadingElement.classList.remove('hidden')
         errorElement.classList.add('hidden')
         
