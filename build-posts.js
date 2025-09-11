@@ -92,14 +92,18 @@ async function generateIndexWithPosts(featuredPosts, regularPosts) {
     if (featuredPosts.length > 0) {
       const post = featuredPosts[0] // Show only the first featured post
       featuredHtml = `
-        <article class="border-b-2 border-black pb-8 mb-8">
-            <div class="text-sm text-black mb-2 font-['Space_Mono']">Featured</div>
-            <h1 class="text-2xl font-normal text-black mb-3 font-['Space_Mono']">
-                <a href="post-${post.slug}.html" class="hover:underline">${post.title}</a>
-            </h1>
-            <div class="text-black mb-4 font-['Space_Mono']">${new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} • jed</div>
-            <div class="text-black leading-relaxed font-['Inter']">${post.excerpt || post.content.substring(0, 200) + '...'}</div>
-        </article>`
+        <div class="bg-gray-50 border border-gray-300 rounded-lg p-6 mb-8">
+            <div class="flex items-center mb-3">
+                <span class="text-xs font-medium text-gray-600 font-['Space_Mono'] uppercase tracking-wider">Featured</span>
+            </div>
+            <article>
+                <h2 class="text-2xl font-normal text-black mb-3 font-['Space_Mono']">
+                    <a href="post-${post.slug}.html" class="hover:underline">${post.title}</a>
+                </h2>
+                <div class="text-black mb-4 font-['Space_Mono']">${new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} • jed</div>
+                <div class="text-black leading-relaxed font-['Inter'] text-sm">${post.excerpt || post.content.substring(0, 200) + '...'}</div>
+            </article>
+        </div>`
     }
     
     // Generate regular posts HTML
@@ -113,11 +117,20 @@ async function generateIndexWithPosts(featuredPosts, regularPosts) {
         </article>
     `).join('')
     
-    // Replace the featured post container
-    indexContent = indexContent.replace(
-      '<div id="featured-post" class="mb-12">\n            <!-- Featured post will be loaded here -->\n        </div>',
-      `<div id="featured-post" class="mb-12">\n            ${featuredHtml}\n        </div>`
-    )
+    // Replace the featured post container (handle both empty and filled states)
+    if (featuredHtml) {
+      // If there's a featured post, replace the entire featured-post div content
+      indexContent = indexContent.replace(
+        /<div id="featured-post" class="mb-12">[\s\S]*?<\/div>/,
+        `<div id="featured-post" class="mb-12">\n            ${featuredHtml}\n        </div>`
+      )
+    } else {
+      // If no featured post, clear the container
+      indexContent = indexContent.replace(
+        /<div id="featured-post" class="mb-12">[\s\S]*?<\/div>/,
+        '<div id="featured-post" class="mb-12">\n            <!-- No featured posts -->\n        </div>'
+      )
+    }
     
     // Replace the posts container with actual content
     indexContent = indexContent.replace(
