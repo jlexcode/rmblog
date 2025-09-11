@@ -60,7 +60,7 @@ function displayFeaturedPost(featuredPosts) {
             </div>
             <article>
                 <h2 class="text-2xl font-normal text-black mb-3 font-['Space_Mono']">
-                    <a href="post.html?slug=${post.slug}" class="hover:underline" onclick="posthog.capture('post_clicked', {post_title: '${post.title}', post_slug: '${post.slug}', post_type: 'featured'})">${post.title}</a>
+                    <a href="post-${post.slug}.html" class="hover:underline" onclick="posthog.capture('post_clicked', {post_title: '${post.title}', post_slug: '${post.slug}', post_type: 'featured'})">${post.title}</a>
                 </h2>
                 <div class="text-black mb-4 font-['Space_Mono']">${formatDate(post.created_at)} • jed</div>
                 <div class="text-black leading-relaxed font-['Inter'] text-sm">${cleanExcerpt(post.excerpt || post.content, 50)}</div>
@@ -79,7 +79,7 @@ function displayPosts(posts) {
     postsContainer.innerHTML = posts.map(post => `
         <article class="border-b border-black pb-8">
             <h2 class="text-xl font-normal text-black mb-2 font-['Space_Mono']">
-                <a href="post.html?slug=${post.slug}" class="hover:underline" onclick="posthog.capture('post_clicked', {post_title: '${post.title}', post_slug: '${post.slug}', post_type: 'regular'})">${post.title}</a>
+                <a href="post-${post.slug}.html" class="hover:underline" onclick="posthog.capture('post_clicked', {post_title: '${post.title}', post_slug: '${post.slug}', post_type: 'regular'})">${post.title}</a>
             </h2>
             <div class="text-black mb-3 font-['Space_Mono']">${formatDate(post.created_at)} • jed</div>
             <div class="text-black leading-relaxed font-['Inter'] text-sm">${cleanExcerpt(post.excerpt || post.content)}</div>
