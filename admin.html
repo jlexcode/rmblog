@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reasonable Machines</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-normal text-black font-['Space_Mono']">Admin Panel</h1>
+            <p class="text-black mt-2 font-['Space_Mono']">Create and edit blog posts</p>
+        </header>
+
+        <!-- Login Section -->
+        <div id="login-section" class="mb-8 p-6 border border-gray-300 rounded-lg">
+            <h2 class="text-xl font-['Space_Mono'] mb-4">Admin Login</h2>
+            <div class="space-y-4">
+                <input type="email" id="admin-email" placeholder="Enter admin email" 
+                       class="w-full p-3 border border-gray-300 rounded font-['Inter']">
+                <input type="password" id="admin-password" placeholder="Enter admin password" 
+                       class="w-full p-3 border border-gray-300 rounded font-['Inter']">
+                <button id="login-btn" class="bg-black text-white px-6 py-2 rounded font-['Space_Mono'] hover:bg-gray-800">
+                    Login
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Interface (Hidden until login) -->
+        <div id="admin-interface" class="hidden space-y-8">
+            <!-- Header with Logout -->
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-['Space_Mono']">Admin Dashboard</h2>
+                <button id="logout-btn" class="bg-gray-600 text-white px-4 py-2 rounded font-['Space_Mono'] hover:bg-gray-700">
+                    Logout
+                </button>
+            </div>
+            
+            <!-- Manage Posts Section -->
+            <div class="p-6 border border-gray-300 rounded-lg">
+                <h2 class="text-xl font-['Space_Mono'] mb-4">Manage Posts</h2>
+                <div class="mb-4">
+                    <button id="load-posts-btn" class="bg-blue-600 text-white px-4 py-2 rounded font-['Space_Mono'] hover:bg-blue-700">
+                        Load All Posts
+                    </button>
+                </div>
+                <div id="posts-list" class="hidden">
+                    <div id="posts-table" class="overflow-x-auto">
+                        <!-- Posts table will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post Form -->
+            <div class="p-6 border border-gray-300 rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-['Space_Mono']" id="form-title">Create New Post</h2>
+                    <button id="new-post-btn" class="bg-green-600 text-white px-4 py-2 rounded font-['Space_Mono'] hover:bg-green-700">
+                        New Post
+                    </button>
+                </div>
+                <form id="post-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 font-['Inter']">Title</label>
+                        <input type="text" id="post-title" required 
+                               class="w-full p-3 border border-gray-300 rounded font-['Inter']">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 font-['Inter']">Slug</label>
+                        <input type="text" id="post-slug" required 
+                               class="w-full p-3 border border-gray-300 rounded font-['Inter']" 
+                               placeholder="post-url-slug">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 font-['Inter']">Excerpt (auto-generated from first 30 words)</label>
+                        <textarea id="post-excerpt" rows="3" readonly
+                                  class="w-full p-3 border border-gray-300 rounded font-['Inter'] bg-gray-50 text-gray-700"
+                                  placeholder="Excerpt will be generated automatically as you type content..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 font-['Inter']">Content</label>
+                        <textarea id="post-content" rows="10" required 
+                                  class="w-full p-3 border border-gray-300 rounded font-['Inter']" 
+                                  placeholder="Write your post content here..."></textarea>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="post-featured" 
+                               class="w-4 h-4 text-black border border-gray-300 rounded focus:ring-black">
+                        <label for="post-featured" class="ml-2 text-sm font-medium font-['Inter']">
+                            Feature this post (show prominently on homepage)
+                        </label>
+                    </div>
+                </form>
+            </div>
+
+            <!-- CSV Table Upload -->
+            <div class="p-6 border border-gray-300 rounded-lg">
+                <h2 class="text-xl font-['Space_Mono'] mb-4">Add Table from CSV</h2>
+                <div class="space-y-4">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <input type="file" id="csv-upload" accept=".csv" class="hidden">
+                        <label for="csv-upload" class="cursor-pointer">
+                            <div class="text-gray-600 font-['Inter']">
+                                <p>Drag & drop CSV file here or click to browse</p>
+                                <p class="text-sm mt-2">Supports .csv files</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div id="csv-preview" class="hidden">
+                        <h3 class="font-['Space_Mono'] mb-2">Table Preview</h3>
+                        <div id="table-preview" class="overflow-x-auto border border-gray-300 rounded"></div>
+                        <div class="mt-4 space-y-2">
+                            <label class="block text-sm font-medium font-['Inter']">Table Caption (optional)</label>
+                            <input type="text" id="table-caption" 
+                                   class="w-full p-2 border border-gray-300 rounded font-['Inter']">
+                            <button id="insert-table-btn" class="bg-black text-white px-4 py-2 rounded font-['Space_Mono'] hover:bg-gray-800">
+                                Insert Table into Post
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="p-6 border border-gray-300 rounded-lg">
+                <h2 class="text-xl font-['Space_Mono'] mb-4">Add Images</h2>
+                <div class="space-y-4">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <input type="file" id="image-upload" accept="image/*" multiple class="hidden">
+                        <label for="image-upload" class="cursor-pointer">
+                            <div class="text-gray-600 font-['Inter']">
+                                <p>Drag & drop PNG/JPEG files here or click to browse</p>
+                                <p class="text-sm mt-2">Supports multiple images</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div id="image-preview" class="hidden">
+                        <h3 class="font-['Space_Mono'] mb-2">Image Preview</h3>
+                        <div id="image-list" class="space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Link Insertion -->
+            <div class="p-6 border border-gray-300 rounded-lg">
+                <h2 class="text-xl font-['Space_Mono'] mb-4">Add Links</h2>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 font-['Inter']">Link URL</label>
+                            <input type="url" id="link-url" 
+                                   class="w-full p-3 border border-gray-300 rounded font-['Inter']"
+                                   placeholder="https://example.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 font-['Inter']">Link Text</label>
+                            <input type="text" id="link-text" 
+                                   class="w-full p-3 border border-gray-300 rounded font-['Inter']"
+                                   placeholder="Click here">
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="link-new-tab" 
+                                   class="w-4 h-4 text-black border border-gray-300 rounded focus:ring-black">
+                            <label for="link-new-tab" class="ml-2 text-sm font-medium font-['Inter']">
+                                Open in new tab
+                            </label>
+                        </div>
+                        <button id="insert-link-btn" class="bg-black text-white px-4 py-2 rounded font-['Space_Mono'] hover:bg-gray-800">
+                            Insert Link into Post
+                        </button>
+                    </div>
+                    <div id="link-preview" class="hidden">
+                        <h3 class="font-['Space_Mono'] mb-2 text-sm">Link Preview</h3>
+                        <div class="p-3 bg-gray-50 border border-gray-300 rounded">
+                            <a id="preview-link" href="#" class="text-blue-600 underline font-['Inter']" target="_blank">Preview link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Publish Section -->
+            <div class="p-6 border border-gray-300 rounded-lg">
+                <h2 class="text-xl font-['Space_Mono'] mb-4">Publish Post</h2>
+                <div class="space-y-4">
+                    <div id="post-preview" class="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                        <h3 class="font-['Space_Mono'] mb-2">Post Preview</h3>
+                        <div id="preview-content" class="max-w-none font-['Inter'] leading-relaxed"></div>
+                    </div>
+                    <button id="publish-btn" class="bg-green-600 text-white px-6 py-3 rounded font-['Space_Mono'] hover:bg-green-700">
+                        Publish Post
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        <div id="status-message" class="hidden fixed top-4 right-4 p-4 rounded-lg shadow-lg"></div>
+    </div>
+
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+    </script>
+
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
