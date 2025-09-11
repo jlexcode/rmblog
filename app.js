@@ -47,6 +47,12 @@ async function loadPosts() {
 
 // Display featured post in the DOM
 function displayFeaturedPost(featuredPosts) {
+    // Check if featured post content already exists (from static generation)
+    if (featuredContainer.innerHTML.trim() !== '') {
+        console.log('Featured post already exists in HTML, skipping JavaScript generation')
+        return
+    }
+    
     if (featuredPosts.length === 0) {
         featuredContainer.innerHTML = ''
         return
@@ -71,6 +77,12 @@ function displayFeaturedPost(featuredPosts) {
 
 // Display posts in the DOM
 function displayPosts(posts) {
+    // Check if posts content already exists (from static generation)
+    if (postsContainer.innerHTML.trim() !== '' && !postsContainer.innerHTML.includes('Loading...')) {
+        console.log('Posts already exist in HTML, skipping JavaScript generation')
+        return
+    }
+    
     if (posts.length === 0) {
         postsContainer.innerHTML = '<p class="text-black text-center py-8 font-[\'Space_Mono\']">No posts yet</p>'
         return
