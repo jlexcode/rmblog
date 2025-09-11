@@ -52,7 +52,7 @@ const postTemplate = (post) => `
         
         <!-- Breadcrumbs -->
         <nav class="mb-6 text-sm">
-            <a href="index.html" class="text-black font-['Space_Mono'] hover:underline">← Back to Home</a>
+            <a href="../index.html" class="text-black font-['Space_Mono'] hover:underline">← Back to Home</a>
         </nav>
 
         <!-- Post content -->
@@ -74,7 +74,7 @@ const postTemplate = (post) => `
         </div>
     </div>
 
-    <script src="header.js"></script>
+    <script src="../header.js"></script>
 </body>
 </html>`
 
@@ -94,7 +94,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
           </div>
           <article>
               <h2 class="text-2xl font-normal text-black mb-3 font-['Space_Mono']">
-                  <a href="post-${post.slug}.html" class="hover:underline">${post.title}</a>
+                  <a href="posts/post-${post.slug}.html" class="hover:underline">${post.title}</a>
               </h2>
               <div class="text-black mb-4 font-['Space_Mono']">${new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} • jed</div>
               <div class="text-black leading-relaxed font-['Inter'] text-sm">${post.excerpt || post.content.substring(0, 200) + '...'}</div>
@@ -106,7 +106,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
   const postsHtml = regularPosts.map(post => `
       <article class="border-b border-black pb-8">
           <h2 class="text-xl font-normal text-black mb-2 font-['Space_Mono']">
-              <a href="post-${post.slug}.html" class="hover:underline">${post.title}</a>
+              <a href="posts/post-${post.slug}.html" class="hover:underline">${post.title}</a>
           </h2>
           <div class="text-black mb-3 font-['Space_Mono']">${new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} • jed</div>
           <div class="text-black leading-relaxed font-['Inter'] text-sm">${post.excerpt || post.content.substring(0, 150) + '...'}</div>
@@ -162,7 +162,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
         </div>
     </div>
 
-    <script src="header.js"></script>
+    <script src="../header.js"></script>
     <script src="app.js"></script>
 </body>
 </html>`
@@ -194,9 +194,14 @@ async function generateStaticPosts() {
   // Generate index.html with posts included for SEO
   generateIndexHtml(featuredPosts, regularPosts)
   
+  // Create posts directory if it doesn't exist
+  if (!fs.existsSync('posts')) {
+    fs.mkdirSync('posts')
+  }
+  
   // Generate HTML file for each post
   for (const post of posts) {
-    const filename = `post-${post.slug}.html`
+    const filename = `posts/post-${post.slug}.html`
     const html = postTemplate(post)
     
     fs.writeFileSync(filename, html)
