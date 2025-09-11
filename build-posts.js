@@ -132,9 +132,9 @@ async function generateIndexWithPosts(featuredPosts, regularPosts) {
       )
     }
     
-    // Replace the posts container with actual content
+    // Replace the posts container with actual content (handle both empty and filled states)
     indexContent = indexContent.replace(
-      '<div id="posts" class="space-y-8">\n            <!-- Regular posts will be loaded here -->\n        </div>',
+      /<div id="posts" class="space-y-8">[\s\S]*?<\/div>/,
       `<div id="posts" class="space-y-8">\n            ${postsHtml}\n        </div>`
     )
     
