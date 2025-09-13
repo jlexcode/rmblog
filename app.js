@@ -65,9 +65,23 @@ function randomLetterEffect(text, element, duration = 3000) {
     updateStep();
 }
 
+// Track page view in analytics
+function trackPageView() {
+    if (window.posthog) {
+        posthog.capture('page_viewed', {
+            page_title: 'Reasonable Machines',
+            page_type: 'home',
+            page_url: window.location.href
+        })
+    }
+}
+
 // Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
     const titleElement = document.getElementById('title-text');
+    
+    // Track page view
+    trackPageView();
     
     // Check if user has seen the animation this session
     const hasSeenAnimation = sessionStorage.getItem('hasSeenAnimation');
