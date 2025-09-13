@@ -1,6 +1,6 @@
-# Simple Blog
+# Simple Research Log
 
-A minimalistic blog built with HTML, Tailwind CSS, JavaScript, and Supabase.
+A minimalistic research log built with HTML, Tailwind CSS, JavaScript, and Supabase.
 
 ## Setup
 

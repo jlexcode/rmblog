@@ -1,7 +1,7 @@
 {
-  "name": "reasonable-machines-blog",
+  "name": "reasonable-machines-research-log",
   "version": "1.0.0",
-  "description": "A minimal blog built with HTML, Tailwind, and Supabase",
+  "description": "A minimal research log built with HTML, Tailwind, and Supabase",
   "main": "index.html",
   "scripts": {
     "build": "node build-posts.js",
@@ -11,7 +11,7 @@
     "@supabase/supabase-js": "^2.0.0"
   },
   "devDependencies": {},
-  "keywords": ["blog", "supabase", "tailwind"],
+  "keywords": ["research log", "supabase", "tailwind"],
   "author": "Jed Stiglitz",
   "license": "MIT"
 }

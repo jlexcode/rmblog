@@ -1,7 +1,7 @@
-# Admin Panel for Reasonable Machines Blog
+# Admin Panel for Reasonable Machines Research Log
 
 ## Overview
-A simple, password-protected admin interface for creating blog posts with CSV table uploads and PNG image uploads.
+A simple, password-protected admin interface for creating research log posts with CSV table uploads and PNG image uploads.
 
 ## Features
 - **Secure Authentication**: Supabase email/password authentication

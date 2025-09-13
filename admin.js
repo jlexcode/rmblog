@@ -1,4 +1,4 @@
-// Admin functionality for blog post creation
+// Admin functionality for research log post creation
 class AdminPanel {
     constructor() {
         this.currentTableData = null;

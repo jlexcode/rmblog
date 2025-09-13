@@ -120,7 +120,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reasonable Machines</title>
-    <meta name="description" content="A blog about law, AI, organizations, and legal technology">
+    <meta name="description" content="A research log about law, AI, organizations, and legal technology">
     <meta name="keywords" content="law, AI, organizations, legal technology, social science, research">
     <meta name="author" content="Jed Stiglitz">
     
