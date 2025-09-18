@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leakage and Prediction Objectives - Reasonable Machines</title>
+    <meta name="description" content="Most published Supreme Court vote predictions include near-term information, including oral argument and amicus data. The earlier predictions I posted included that information, too, and using that information the model...">
+    <meta name="keywords" content="law, AI, organizations, legal technology, social science, research">
+    <meta name="author" content="Jed Stiglitz">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://reasonablemachines.io/post-leakage-and-prediction-objectives.html">
+    <meta property="og:title" content="Leakage and Prediction Objectives - Reasonable Machines">
+    <meta property="og:description" content="Most published Supreme Court vote predictions include near-term information, including oral argument and amicus data. The earlier predictions I posted included that information, too, and using that information the model...">
+    <meta property="og:site_name" content="Reasonable Machines">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reasonablemachines.io/post-leakage-and-prediction-objectives.html">
+    <meta property="twitter:title" content="Leakage and Prediction Objectives - Reasonable Machines">
+    <meta property="twitter:description" content="Most published Supreme Court vote predictions include near-term information, including oral argument and amicus data. The earlier predictions I posted included that information, too, and using that information the model...">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/post-leakage-and-prediction-objectives.html">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .post-link {
+            color: #3b82f6; /* same blue as about page */
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        
+        <!-- Breadcrumbs -->
+        <nav class="mb-6 text-sm">
+            <a href="../index.html" class="text-black font-['Space_Mono'] hover:underline">← Back to Home</a>
+        </nav>
+
+        <!-- Post content -->
+        <div id="post-content">
+            <header class="mb-8">
+                <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">Leakage and Prediction Objectives</h1>
+                <div class="text-black mb-6 font-['Space_Mono']">September 18, 2025 • jed</div>
+            </header>
+            
+            <article class="prose prose-lg max-w-none">
+                <div class="text-black leading-relaxed font-['Inter']">Most published Supreme Court vote predictions include near-term information, including oral argument and amicus data. The <a href="https://reasonablemachines.io/posts/post-using-ai-to-predict-justices-votes" target="_blank" rel="noopener noreferrer" class="post-link">earlier predictions</a> I posted included that information, too, and using that information the model roughly matched SOTA on the vote level and exceeded both algorithmic and human performance at the case level. <br><br>However, using near-decision information is problematic for two reasons. First, depending on your prediction objective, if not carefully managed, there is a risk of leakage. For instance, some predictions use the date of decision as a predictive feature. But the outcome of the case might lead to the decision coming out at a different time. The Court typically issues its most contentious decisions in June. So knowing that a decision came out in June may tell us something about the likely outcome in the case. I did not use date of decision as a feature in the earlier predictions for this reason. Second, relatedly, it is not clear that the near-decision prediction is the relevant prediction objective. <br><br>When do we want to be able to make a prediction? It depends. It is possible to imagine being in June and wondering how the blockbuster cases will turn out. If so, using all near-decision information is relevant and correct. We don’t care about the integrity of predictions for decisions issued in May or earlier, they’ve already passed—we just want to know what happens in the few remaining, known June cases. <br><br>But there are other possible prediction objectives. We might, instead, imagine ourselves sitting at the start of the term and wondering how it will unfold. In that case, we will want to ensure integrity of predictions for all decisions and to carefully guard against leakage. We will also not have oral argument or amicus data. Predictions will be based solely on lower court information, possibly some but not all filings, and the learned behavior of the justices. <br><br>Another closely related possible prediction objective is to imagine someone wondering how a lower court decision would fare before the Court, were they to hear the case. A lower court judge, for instance, might wonder what the Court would do if it reviewed their draft opinion. Or a litigant might wonder, should I appeal this lower court decision? In these situations, there would be only lower court information, no cert petitions or other briefs. I see this as the most minimalistic prediction objective of interest.<br><br>Next, I will post predictions based on this minimalistic, lower-court-only prediction objective.</div>
+            </article>
+        </div>
+    </div>
+
+    <script src="../header.js"></script>
+    
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+        
+        // Track post view
+        posthog.capture('post_viewed', {
+            post_title: 'Leakage and Prediction Objectives',
+            post_slug: 'leakage-and-prediction-objectives',
+            post_id: '10',
+            post_featured: true,
+            post_date: '2025-09-18T14:39:04.2+00:00'
+        })
+    </script>
+</body>
+</html>
