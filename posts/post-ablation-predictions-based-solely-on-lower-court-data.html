@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ablation: Predictions Based Solely on Lower Court Data - Reasonable Machines</title>
+    <meta name="description" content="Often it will be of interest to predict what the Court would do before oral argument, before amicus or party briefs arrive, or before even a cert petition. A lower...">
+    <meta name="keywords" content="law, AI, organizations, legal technology, social science, research">
+    <meta name="author" content="Jed Stiglitz">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://reasonablemachines.io/post-ablation-predictions-based-solely-on-lower-court-data.html">
+    <meta property="og:title" content="Ablation: Predictions Based Solely on Lower Court Data - Reasonable Machines">
+    <meta property="og:description" content="Often it will be of interest to predict what the Court would do before oral argument, before amicus or party briefs arrive, or before even a cert petition. A lower...">
+    <meta property="og:site_name" content="Reasonable Machines">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reasonablemachines.io/post-ablation-predictions-based-solely-on-lower-court-data.html">
+    <meta property="twitter:title" content="Ablation: Predictions Based Solely on Lower Court Data - Reasonable Machines">
+    <meta property="twitter:description" content="Often it will be of interest to predict what the Court would do before oral argument, before amicus or party briefs arrive, or before even a cert petition. A lower...">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/post-ablation-predictions-based-solely-on-lower-court-data.html">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .post-link {
+            color: #3b82f6; /* same blue as about page */
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        
+        <!-- Breadcrumbs -->
+        <nav class="mb-6 text-sm">
+            <a href="../index.html" class="text-black font-['Space_Mono'] hover:underline">← Back to Home</a>
+        </nav>
+
+        <!-- Post content -->
+        <div id="post-content">
+            <header class="mb-8">
+                <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">Ablation: Predictions Based Solely on Lower Court Data</h1>
+                <div class="text-black mb-6 font-['Space_Mono']">September 19, 2025 • jed</div>
+            </header>
+            
+            <article class="prose prose-lg max-w-none">
+                <div class="text-black leading-relaxed font-['Inter']">Often it will be of interest to predict what the Court would do before oral argument, before amicus or party briefs arrive, or before even a cert petition. A lower court judge might wonder, what would the court do with this decision? Or a party might wonder, is it even worth filing a cert petition? <br><br>For this kind of prediction objective, we have relatively few features to work with: mostly basic information about the lower court and its decision, along with the learned voting behavior of judges. Notably missing from this analysis would be data from the briefs, amicus positions, or oral arguments, all of which may be predictive of voting patterns. <a href="https://reasonablemachines.io/posts/post-using-ai-to-predict-justices-votes" target="_blank" rel="noopener noreferrer" class="post-link">Earlier</a>, I created a customized model to predict votes using those near-decision features, yielding competitive performance at the vote level and SOTA performance at the case level. Vote level accuracy was 71 percent and case level accuracy was 79 percent. Now let’s ablate those near-decision features and see how performance changes.<br><br>As expected, performance degraded substantially without near-decision features. Applying the model to the held out OT2024, the vote-level accuracy drops to 67 percent, and case-level accuracy drops to 71 percent. More detailed vote and case level performance results are below. Here is the vote-level performance.<br><br><br><div class="overflow-x-auto my-2"><table class="w-full border-collapse border border-gray-300"><thead><tr class="bg-gray-100"><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Class</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Precision</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Recall</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">F1</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Support</th></tr></thead><tbody><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Affirm</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.53</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.27</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.36</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">173</td></tr><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Reverse</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.69</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.88</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.78</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">328</td></tr><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Macro (weighted)</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.56</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td></tr><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Macro (unweighted)</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.63</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td></tr></tbody></table><p class="text-sm text-gray-600 mt-1 text-center font-['Inter'] italic">Vote-level performance</p></div><br><br>And here is the case-level performance.<br><br><div class="overflow-x-auto my-2"><table class="w-full border-collapse border border-gray-300"><thead><tr class="bg-gray-100"><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Class</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Precision</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Recall</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">F1</th><th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Support</th></tr></thead><tbody><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Affirm</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.43</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.2</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.27</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">15</td></tr><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Reverse</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.76</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.9</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.82</td><td class="border border-gray-300 px-3 py-2 font-['Inter']">41</td></tr><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Macro (weighted)</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.67</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td></tr><tr class="hover:bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-['Inter']">Macro (unweighted)</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td><td class="border border-gray-300 px-3 py-2 font-['Inter']">0.55</td><td class="border border-gray-300 px-3 py-2 font-['Inter']"></td></tr></tbody></table><p class="text-sm text-gray-600 mt-1 text-center font-['Inter'] italic">Case-level performance</p></div><br><br><br>Calibration also worsens without the near-decision data. The vote-level Brier score is 0.21 (up from 0.19 in the fuller model). The vote-level calibration plot is below.<br><br><figure class="my-2"><img src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1758292482016-0d0tig.png" alt="Vote-level calibration" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">Vote-level calibration</figcaption></figure><br><br>Okay, two items next up. I have two ideas to improve model performance I want to try. Then I will forecast the term that just started using the best model.<br><br>Until soon.</div>
+            </article>
+        </div>
+    </div>
+
+    <script src="../header.js"></script>
+    
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+        
+        // Track post view
+        posthog.capture('post_viewed', {
+            post_title: 'Ablation: Predictions Based Solely on Lower Court Data',
+            post_slug: 'ablation-predictions-based-solely-on-lower-court-data',
+            post_id: '11',
+            post_featured: true,
+            post_date: '2025-09-19T14:36:29.907+00:00'
+        })
+    </script>
+</body>
+</html>
