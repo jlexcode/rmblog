@@ -2,14 +2,80 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://reasonablemachines.io/</loc>
-        <lastmod>2024-01-01</lastmod>
+        <lastmod>2025-10-11</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://reasonablemachines.io/about.html</loc>
-        <lastmod>2024-01-01</lastmod>
+        <lastmod>2025-10-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-us-postal-service-v-konan.html</loc>
+        <lastmod>2025-10-10</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-bost-v-illinois-state-board-of-elections.html</loc>
+        <lastmod>2025-10-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-chiles-v-salazar.html</loc>
+        <lastmod>2025-10-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-barrett-v-us.html</loc>
+        <lastmod>2025-10-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-berk-v-choy.html</loc>
+        <lastmod>2025-10-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-villarreal-v-texas.html</loc>
+        <lastmod>2025-10-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-early-term-court-predictions.html</loc>
+        <lastmod>2025-10-06</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-ablation-predictions-based-solely-on-lower-court-data.html</loc>
+        <lastmod>2025-09-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-leakage-and-prediction-objectives.html</loc>
+        <lastmod>2025-09-18</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-using-ai-to-predict-justices-votes.html</loc>
+        <lastmod>2025-09-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-welcome-and-thanks-for-visiting.html</loc>
+        <lastmod>2025-09-09</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
     </url>
 </urlset>
