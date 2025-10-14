@@ -109,7 +109,17 @@ class EmailSignup {
     }
 }
 
-// Initialize email signup when DOM is loaded
+// Initialize email signup when DOM is loaded and Supabase is available
 document.addEventListener('DOMContentLoaded', function() {
-    new EmailSignup();
+    // Wait for Supabase to be available
+    function initEmailSignup() {
+        if (typeof supabase !== 'undefined') {
+            new EmailSignup();
+        } else {
+            // Retry after a short delay
+            setTimeout(initEmailSignup, 100);
+        }
+    }
+    
+    initEmailSignup();
 });

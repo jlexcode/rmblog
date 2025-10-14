@@ -135,6 +135,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
     <meta name="author" content="Jed Stiglitz">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
     <style>
@@ -167,6 +168,20 @@ function generateIndexHtml(featuredPosts, regularPosts) {
             ${featuredHtml}
         </div>
 
+        <!-- Email Signup -->
+        <div class="bg-gray-50 border border-gray-300 rounded-lg p-4 mb-6">
+            <form id="email-signup-form" class="flex items-center gap-3">
+                <span class="text-sm font-normal text-black font-['Space_Mono'] whitespace-nowrap">Get notified w/ new posts</span>
+                <input type="email" id="email-input" placeholder="Enter your email" 
+                       class="flex-1 p-2 border border-gray-300 rounded font-['Inter'] text-xs">
+                <button type="submit" id="signup-btn" 
+                        class="bg-black text-white px-3 py-2 rounded font-['Space_Mono'] text-xs hover:bg-gray-800 whitespace-nowrap">
+                    Subscribe
+                </button>
+            </form>
+            <div id="signup-message" class="mt-2 text-xs hidden"></div>
+        </div>
+
         <div id="posts" class="space-y-8">
             ${postsHtml}
         </div>
@@ -174,6 +189,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
 
     <script src="../header.js"></script>
     <script src="app.js"></script>
+    <script src="email-signup.js"></script>
     
     <!-- PostHog Analytics -->
     <script>

@@ -51,6 +51,12 @@ class AdminPanel {
             loadPostsBtn.addEventListener('click', () => this.loadPostsList());
         }
 
+        // Load current predictions button
+        const loadCurrentPredictionsBtn = document.getElementById('load-current-predictions-btn');
+        if (loadCurrentPredictionsBtn) {
+            loadCurrentPredictionsBtn.addEventListener('click', () => this.loadCurrentPredictions());
+        }
+
         // New post button
         const newPostBtn = document.getElementById('new-post-btn');
         if (newPostBtn) {
@@ -586,6 +592,47 @@ class AdminPanel {
         });
     }
 
+    async loadCurrentPredictions() {
+        try {
+            window.adminAuth.showStatus('Loading current predictions...', 'info');
+            
+            const SUPABASE_URL = 'https://xlglobsjkfpfpkxlivki.supabase.co'
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZ2xvYnNqa2ZwZnBreGxpdmtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTg2NDYsImV4cCI6MjA3MjMzNDY0Nn0.6_zXfDYP8C23FBJZTGKz2ecK74-md4-t9ellPENGWCc'
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            const { data, error } = await supabaseClient
+                .from('predictions_table')
+                .select('*')
+                .eq('id', 1)
+                .single();
+            
+            if (error) {
+                if (error.code === 'PGRST116') {
+                    window.adminAuth.showStatus('No current predictions found', 'error');
+                    return;
+                }
+                throw error;
+            }
+            
+            // Populate the form with current prediction data
+            document.getElementById('post-title').value = data.title;
+            document.getElementById('post-content').value = data.table_content;
+            document.getElementById('save-as-predictions').checked = true;
+            
+            // Update form title
+            document.getElementById('form-title').textContent = 'Edit Current Predictions';
+            
+            // Update preview
+            this.updatePostPreview();
+            
+            window.adminAuth.showStatus('Current predictions loaded for editing', 'success');
+            
+        } catch (error) {
+            console.error('Error loading current predictions:', error);
+            window.adminAuth.showStatus(`Error loading predictions: ${error.message}`, 'error');
+        }
+    }
+
     async editPost(postId) {
         try {
             window.adminAuth.showStatus('Loading post for editing...', 'info');
@@ -708,7 +755,7 @@ class AdminPanel {
             const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
             if (saveAsPredictions) {
-                // Save as predictions table
+                // Save as predictions table (always creates new version)
                 await this.savePredictionsTable(content, title, supabaseClient);
                 window.adminAuth.showStatus('Predictions table updated successfully!', 'success');
             } else {
@@ -813,6 +860,7 @@ class AdminPanel {
         
         if (updateError) throw updateError;
     }
+
 
 }
 
