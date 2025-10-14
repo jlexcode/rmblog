@@ -6,7 +6,9 @@ A minimalistic research log built with HTML, Tailwind CSS, JavaScript, and Supab
 
 1. Create a Supabase project at [supabase.com](https://supabase.com)
 
-2. Create a `posts` table in your Supabase database:
+2. Create the required tables in your Supabase database:
+   
+   **Posts table:**
    ```sql
    CREATE TABLE posts (
      id SERIAL PRIMARY KEY,
@@ -14,7 +16,19 @@ A minimalistic research log built with HTML, Tailwind CSS, JavaScript, and Supab
      excerpt TEXT NOT NULL,
      content TEXT NOT NULL,
      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-     slug TEXT UNIQUE NOT NULL
+     slug TEXT UNIQUE NOT NULL,
+     featured BOOLEAN DEFAULT FALSE
+   );
+   ```
+   
+   **Predictions table:**
+   ```sql
+   CREATE TABLE predictions_table (
+     id SERIAL PRIMARY KEY,
+     title TEXT NOT NULL,
+     table_content TEXT NOT NULL,
+     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
    );
    ```
 
@@ -32,9 +46,22 @@ A minimalistic research log built with HTML, Tailwind CSS, JavaScript, and Supab
 
 - Clean, minimalistic design
 - Posts loaded from Supabase
+- Predictions page with confidence-colored tables
+- Admin panel for content management
+- Static site generation
 - Responsive layout
-- Simple and functional
+- SEO optimized with sitemaps
 
-## Adding Posts
+## Adding Content
 
-You can add posts directly to your Supabase database or create an admin interface later.
+### Blog Posts
+Use the admin panel at `/admin.html` to create and manage blog posts.
+
+### Predictions Tables
+1. Generate HTML table in R with confidence coloring
+2. Use admin panel to upload as "Predictions Table"
+3. Build script generates static `predictions.html` page
+
+## Build Process
+
+Run `npm run build` to generate static HTML files from Supabase data.

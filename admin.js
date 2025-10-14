@@ -481,21 +481,27 @@ class AdminPanel {
         const preview = document.getElementById('preview-content');
         
         if (preview && content) {
-            // More aggressive HTML rendering for preview with tight spacing
-            preview.innerHTML = content
-                // First, handle line breaks around HTML elements more aggressively
-                .replace(/\n+<div/g, '<div')     // Remove any line breaks before tables
-                .replace(/\n+<figure/g, '<figure') // Remove any line breaks before figures
-                .replace(/\n\n/g, '<br><br>')    // Convert double line breaks to paragraphs
-                .replace(/\n/g, '<br>')          // Convert remaining single line breaks
-                // Remove top margins completely in preview
-                .replace(/class="my-2"/g, 'class="mb-2"')  // Only bottom margin
-                .replace(/class="my-1"/g, 'class="mb-1"')  // Only bottom margin
-                .replace(/class="mt-0 mb-2"/g, 'class="mb-2"')  // Clean up if already processed
-                .replace(/class="mt-0 mb-1"/g, 'class="mb-1"')  // Clean up if already processed
-                // Style tables and images
-                .replace(/<table/g, '<table class="w-full border-collapse border border-gray-300"')
-                .replace(/<img/g, '<img class="w-full rounded-lg shadow-sm"');
+            // Check if content contains HTML tables
+            if (content.includes('<table') || content.includes('<div class="overflow-x-auto')) {
+                // For HTML content, render directly without text processing
+                preview.innerHTML = content;
+            } else {
+                // For plain text content, do the existing processing
+                preview.innerHTML = content
+                    // First, handle line breaks around HTML elements more aggressively
+                    .replace(/\n+<div/g, '<div')     // Remove any line breaks before tables
+                    .replace(/\n+<figure/g, '<figure') // Remove any line breaks before figures
+                    .replace(/\n\n/g, '<br><br>')    // Convert double line breaks to paragraphs
+                    .replace(/\n/g, '<br>')          // Convert remaining single line breaks
+                    // Remove top margins completely in preview
+                    .replace(/class="my-2"/g, 'class="mb-2"')  // Only bottom margin
+                    .replace(/class="my-1"/g, 'class="mb-1"')  // Only bottom margin
+                    .replace(/class="mt-0 mb-2"/g, 'class="mb-2"')  // Clean up if already processed
+                    .replace(/class="mt-0 mb-1"/g, 'class="mb-1"')  // Clean up if already processed
+                    // Style tables and images
+                    .replace(/<table/g, '<table class="w-full border-collapse border border-gray-300"')
+                    .replace(/<img/g, '<img class="w-full rounded-lg shadow-sm"');
+            }
         }
     }
 
@@ -655,6 +661,7 @@ class AdminPanel {
         document.getElementById('post-form').reset();
         document.getElementById('post-content').value = '';
         document.getElementById('post-featured').checked = false;
+        document.getElementById('save-as-predictions').checked = false; // Reset to default (post)
         this.editingPostId = null;
         document.getElementById('form-title').textContent = 'Create New Post';
         
@@ -673,16 +680,23 @@ class AdminPanel {
         const excerpt = document.getElementById('post-excerpt').value.trim();
         const content = document.getElementById('post-content').value.trim();
         const featured = document.getElementById('post-featured').checked;
+        const saveAsPredictions = document.getElementById('save-as-predictions').checked;
 
-        if (!title || !slug || !content) {
-            window.adminAuth.showStatus('Please fill in all required fields', 'error');
+        if (!title || !content) {
+            window.adminAuth.showStatus('Please fill in title and content', 'error');
+            return;
+        }
+
+        // For regular posts, slug is required
+        if (!saveAsPredictions && !slug) {
+            window.adminAuth.showStatus('Please fill in slug for blog post', 'error');
             return;
         }
 
         // Check if user is authenticated
         const user = window.adminAuth.getCurrentUser();
         if (!user) {
-            window.adminAuth.showStatus('Please log in to publish posts', 'error');
+            window.adminAuth.showStatus('Please log in to publish', 'error');
             return;
         }
 
@@ -693,68 +707,75 @@ class AdminPanel {
             
             const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             
-            // If featuring this post, unfeatured all other posts first
-            if (featured) {
-                await supabaseClient
-                    .from('posts')
-                    .update({ featured: false })
-                    .eq('featured', true);
-            }
-            
-            let data, error;
-            
-            if (this.editingPostId) {
-                // Update existing post
-                const result = await supabaseClient
-                    .from('posts')
-                    .update({ 
-                        title, 
-                        slug, 
-                        excerpt, 
-                        content,
-                        featured
-                    })
-                    .eq('id', this.editingPostId);
-                
-                data = result.data;
-                error = result.error;
+            if (saveAsPredictions) {
+                // Save as predictions table
+                await this.savePredictionsTable(content, title, supabaseClient);
+                window.adminAuth.showStatus('Predictions table updated successfully!', 'success');
             } else {
-                // Create new post
-                const result = await supabaseClient
-                    .from('posts')
-                    .insert([{ 
-                        title, 
-                        slug, 
-                        excerpt, 
-                        content,
-                        featured,
-                        created_at: new Date().toISOString()
-                    }]);
+                // Save as regular blog post (existing logic)
+                // If featuring this post, unfeatured all other posts first
+                if (featured) {
+                    await supabaseClient
+                        .from('posts')
+                        .update({ featured: false })
+                        .eq('featured', true);
+                }
                 
-                data = result.data;
-                error = result.error;
+                let data, error;
+                
+                if (this.editingPostId) {
+                    // Update existing post
+                    const result = await supabaseClient
+                        .from('posts')
+                        .update({ 
+                            title, 
+                            slug, 
+                            excerpt, 
+                            content,
+                            featured
+                        })
+                        .eq('id', this.editingPostId);
+                    
+                    data = result.data;
+                    error = result.error;
+                } else {
+                    // Create new post
+                    const result = await supabaseClient
+                        .from('posts')
+                        .insert([{ 
+                            title, 
+                            slug, 
+                            excerpt, 
+                            content,
+                            featured,
+                            created_at: new Date().toISOString()
+                        }]);
+                    
+                    data = result.data;
+                    error = result.error;
+                }
+                
+                if (error) throw error;
+                
+                const action = this.editingPostId ? 'updated' : 'published';
+                const statusMessage = featured ? 
+                    `Featured post ${action} successfully!` : 
+                    `Post ${action} successfully!`;
+                window.adminAuth.showStatus(statusMessage, 'success');
+                
+                // Track post publication
+                if (window.posthog) {
+                    posthog.capture('admin_post_published', {
+                        post_title: title,
+                        post_slug: slug,
+                        is_featured: featured,
+                        is_edit: !!this.editingPostId
+                    });
+                }
             }
-            
-            if (error) throw error;
-            
-            const action = this.editingPostId ? 'updated' : 'published';
-            const statusMessage = featured ? 
-                `Featured post ${action} successfully!` : 
-                `Post ${action} successfully!`;
-            window.adminAuth.showStatus(statusMessage, 'success');
             
             // Clear the form and reset editing state
             this.clearForm();
-            
-            // Track post publication
-            if (window.posthog) {
-                posthog.capture('admin_post_published', {
-                    post_title: title,
-                    post_slug: slug,
-                    is_featured: featured,
-                    is_edit: !!this.editingPostId
-                });
-            }
             
             // Reload posts list if it's visible
             if (!document.getElementById('posts-list').classList.contains('hidden')) {
@@ -763,9 +784,36 @@ class AdminPanel {
             
         } catch (error) {
             console.error('Publish error:', error);
-            window.adminAuth.showStatus(`Error publishing post: ${error.message}`, 'error');
+            window.adminAuth.showStatus(`Error publishing: ${error.message}`, 'error');
         }
     }
+
+    async savePredictionsTable(content, title, supabaseClient) {
+        // Save to Supabase for versioning (create new entry each time)
+        const { error } = await supabaseClient
+            .from('predictions_table')
+            .insert([{ 
+                title: title,
+                table_content: content, // Just save the table content
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            }]);
+        
+        if (error) throw error;
+        
+        // Also update the "current" record (id=1) for the build script
+        const { error: updateError } = await supabaseClient
+            .from('predictions_table')
+            .upsert([{ 
+                id: 1, // Current record for build script
+                title: title,
+                table_content: content, // Just the table content
+                updated_at: new Date().toISOString()
+            }]);
+        
+        if (updateError) throw updateError;
+    }
+
 }
 
 // Initialize admin panel when DOM is loaded

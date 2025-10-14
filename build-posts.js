@@ -50,11 +50,6 @@ const postTemplate = (post) => `
     <div class="max-w-2xl mx-auto px-4 py-8">
         <div id="header"></div>
         
-        <!-- Breadcrumbs -->
-        <nav class="mb-6 text-sm">
-            <a href="../index.html" class="text-black font-['Space_Mono'] hover:underline">← Back to Home</a>
-        </nav>
-
         <!-- Post content -->
         <div id="post-content">
             <header class="mb-8">
@@ -200,7 +195,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
 }
 
 // Generate sitemap.xml
-function generateSitemap(posts) {
+function generateSitemap(posts, hasPredictions = false) {
   console.log('Generating sitemap.xml...')
   
   const baseUrl = 'https://reasonablemachines.io'
@@ -220,7 +215,24 @@ function generateSitemap(posts) {
         <lastmod>${currentDate}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>${baseUrl}/methods.html</loc>
+        <lastmod>${currentDate}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>`
+  
+  // Add predictions page if it exists
+  if (hasPredictions) {
+    sitemap += `
+    <url>
+        <loc>${baseUrl}/predictions.html</loc>
+        <lastmod>${currentDate}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>`
+  }
   
   // Add each blog post to sitemap
   for (const post of posts) {
@@ -244,6 +256,106 @@ function generateSitemap(posts) {
   console.log('✅ Generated: sitemap.xml')
 }
 
+// Template for predictions page HTML
+const predictionsTemplate = (predictions) => `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Predictions - Reasonable Machines</title>
+    <meta name="description" content="Current Supreme Court predictions with confidence levels">
+    <meta name="keywords" content="law, AI, Supreme Court, predictions, legal technology">
+    <meta name="author" content="Jed Stiglitz">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://reasonablemachines.io/predictions.html">
+    <meta property="og:title" content="Current Predictions - Reasonable Machines">
+    <meta property="og:description" content="Current Supreme Court predictions with confidence levels">
+    <meta property="og:site_name" content="Reasonable Machines">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reasonablemachines.io/predictions.html">
+    <meta property="twitter:title" content="Current Predictions - Reasonable Machines">
+    <meta property="twitter:description" content="Current Supreme Court predictions with confidence levels">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/predictions.html">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        
+        <header class="mb-8">
+            <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">Current Predictions</h1>
+        </header>
+        
+        <main class="space-y-6">
+            <article class="prose prose-lg max-w-none">
+                <div class="text-black leading-relaxed font-['Inter']">
+                    ${predictions.table_content}
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <script src="header.js"></script>
+    
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a?e+="."+a:t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+        
+        // Track page view
+        posthog.capture('page_viewed', {
+            page_title: 'Current Predictions',
+            page_type: 'predictions',
+            page_url: window.location.href
+        })
+    </script>
+</body>
+</html>`
+
+// Generate predictions page
+async function generatePredictionsPage() {
+  console.log('Fetching predictions from Supabase...')
+  
+  const { data: predictions, error } = await supabase
+    .from('predictions_table')
+    .select('*')
+    .eq('id', 1)
+    .single()
+  
+  if (error) {
+    if (error.code === 'PGRST116') {
+      console.log('No predictions table found, skipping...')
+      return false
+    }
+    console.error('Error fetching predictions:', error)
+    return false
+  }
+  
+  if (!predictions || !predictions.table_content) {
+    console.log('No predictions table content found, skipping...')
+    return false
+  }
+  
+  // Generate HTML using template
+  const html = predictionsTemplate(predictions)
+  
+  // Write the predictions.html file
+  fs.writeFileSync('predictions.html', html)
+  console.log('✅ Generated: predictions.html')
+  return true
+}
+
 // Generate static post files
 async function generateStaticPosts() {
   console.log('Fetching posts from Supabase...')
@@ -264,11 +376,14 @@ async function generateStaticPosts() {
   
   console.log(`Found ${posts.length} posts (${featuredPosts.length} featured, ${regularPosts.length} regular)`)
   
+  // Generate predictions page
+  const hasPredictions = await generatePredictionsPage()
+  
   // Generate index.html with posts included for SEO
   generateIndexHtml(featuredPosts, regularPosts)
   
-  // Generate sitemap.xml with all posts
-  generateSitemap(posts)
+  // Generate sitemap.xml with all posts and predictions
+  generateSitemap(posts, hasPredictions)
   
   // Create posts directory if it doesn't exist
   if (!fs.existsSync('posts')) {

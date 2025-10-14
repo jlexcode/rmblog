@@ -4,6 +4,8 @@ function createHeader() {
         <nav class="mb-8 border-b border-black pb-4">
             <div class="flex space-x-6">
                 <a href="/" class="text-black font-['Space_Mono'] hover:underline">Home</a>
+                <a href="/methods.html" class="text-black font-['Space_Mono'] hover:underline">Methods</a>
+                                <a href="/predictions.html" class="text-black font-['Space_Mono'] hover:underline">Term Predictions</a>
                 <a href="/about.html" class="text-black font-['Space_Mono'] hover:underline">About</a>
             </div>
         </nav>

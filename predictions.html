@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Predictions - Reasonable Machines</title>
+    <meta name="description" content="Current Supreme Court predictions with confidence levels">
+    <meta name="keywords" content="law, AI, Supreme Court, predictions, legal technology">
+    <meta name="author" content="Jed Stiglitz">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://reasonablemachines.io/predictions.html">
+    <meta property="og:title" content="Current Predictions - Reasonable Machines">
+    <meta property="og:description" content="Current Supreme Court predictions with confidence levels">
+    <meta property="og:site_name" content="Reasonable Machines">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reasonablemachines.io/predictions.html">
+    <meta property="twitter:title" content="Current Predictions - Reasonable Machines">
+    <meta property="twitter:description" content="Current Supreme Court predictions with confidence levels">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/predictions.html">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        
+        <header class="mb-8">
+            <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">Current Predictions</h1>
+        </header>
+        
+        <main class="space-y-6">
+            <article class="prose prose-lg max-w-none">
+                <div class="text-black leading-relaxed font-['Inter']">
+                    This page reports the current predictions for the Court's votes this term. Blue indicates a predicted reversal, and grey indicates a predicted affirmance; the darker the color, the more confident the model is in the prediction (e.g., white means 50-50, dark blue means very likely reverse). Predicted vote-counts are in parentheses, first listing reverse counts then affirm counts. The docket reports will generally be available after the case is argued by clicking on the case name.
+<br>
+<br>
+<div class="overflow-x-auto my-2"><table class="w-full border-collapse border border-gray-300">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Case Name</th>
+                <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Docket</th>
+                <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Pre-Argument Prediction</th>
+                <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Post-Argument Prediction</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']"><a href="https://reasonablemachines.io/posts/post-docket-report-villarreal-v-texas" class="hover:underline">Villarreal v. Texas</a></td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-557</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(107, 114, 128, 0.27336);">Affirm (2-7)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(107, 114, 128, 0.00214000000000003);">Affirm (4-5)</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']"><a href="https://reasonablemachines.io/posts/post-docket-report-berk-v-choy" class="hover:underline">Berk v. Choy</a></td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-440</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.14232);">Reverse (7-2)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.14336);">Reverse (6-3)</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']"><a href="https://reasonablemachines.io/posts/post-docket-report-barrett-v-us" class="hover:underline">Barrett v. U.S.</a></td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-5774</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.14112);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.0700799999999999);">Reverse (5-4)</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']"><a href="https://reasonablemachines.io/posts/post-docket-report-chiles-v-salazar" class="hover:underline">Chiles v. Salazar</a></td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-539</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.69894);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.65766);">Reverse (8-1)</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']"><a href="https://reasonablemachines.io/posts/post-docket-report-bost-v-illinois-state-board-of-elections" class="hover:underline">Bost v. Illinois State Board of Elections</a></td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-568</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(107, 114, 128, 0.0676);">Affirm (3-6)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.40506);">Reverse (6-3)</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']"><a href="https://reasonablemachines.io/posts/post-docket-report-us-postal-service-v-konan" class="hover:underline">U.S. Postal Service v. Konan</a></td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-351</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.27956);">Reverse (7-2)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.34194);">Reverse (9-0)</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Bowe v. U.S.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-5438</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.4643);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Ellingburg v. U.S.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-482</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.07216);">Reverse (5-4)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Case v. Montana</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-624</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.2722);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Louisiana v. Callais</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-109</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.69422);">Reverse (6-3)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Rico v. U.S.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-1056</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.3418);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Hencely v. Fluor Corporation</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-924</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.07264);">Reverse (5-4)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Coney Island Auto Parts Unlimited v. Burton</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-808</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.40446);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">The Hain Celestial Group v. Palmquist</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-724</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.515);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Learning Resources v. Trump</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-1287</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.61282);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">The GEO Group v. Menocal</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-758</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.27498);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Landor v. Louisiana Department of Corrections and Public Safety</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">23-1197</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(107, 114, 128, 0.21566);">Affirm (2-7)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Rutherford v. U.S.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-820</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.27998);">Reverse (7-2)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Fernandez v. U.S.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-556</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(107, 114, 128, 0.14364);">Affirm (3-6)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Chevron USA Inc. v. Plaquemines Parish, Louisiana</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-813</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.07186);">Reverse (6-3)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Cox Communications v. Sony Music Entm't</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-171</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.4064);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Enbridge Energy, LP v. Nessel</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-783</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.5137);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Exxon Mobil Corp. v. Corporacion Cimex, S.A.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-699</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.46274);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">First Choice Women's Resource Centers v. Platkin</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-781</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.46518);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">FS Credit Opportunities Corp. v. Saba Capital Master Fund, Ltd.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-345</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.51502);">Reverse (8-1)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Galette v. New Jersey Transit Corporation</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-1021</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(107, 114, 128, 0.07678);">Affirm (3-6)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Hamm v. Smith</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-872</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.87426);">Reverse (7-2)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Havana Docks Corporation v. Royal Caribbean Cruises, Ltd.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-983</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.07318);">Reverse (5-4)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Little v. Hecox</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-38</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.9071);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">M &amp; K Employee Solutions, LLC v. Trustees of the IAM National Pension Fund</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">23-1209</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.40816);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Montgomery v. Caribe Transport II, LLC</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-1238</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.1364);">Reverse (7-2)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">National Republican Senatorial Committee v. Federal Election Commission</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-621</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.56982);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Olivier v. City of Brandon, Mississippi</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-993</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.45684);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Pung v. Isabella County, Michigan</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">25-95</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.3383);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Trump v. Cook</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">25a312</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.61442);">Reverse (6-3)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Trump v. Slaughter</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">25-332</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.40712);">Reverse (7-2)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Urias-Orellana v. Bondi</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-777</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.20718);">Reverse (8-1)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">West Virginia v. B.P.J.</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-43</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.92932);">Reverse (8-1)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Wolford v. Lopez</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-1046</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.7626);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">Department of Education v. Career Colleges and Schools of Texas</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']">24-413</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: rgba(59, 130, 246, 0.4095);">Reverse (9-0)</td>
+                <td class="border border-gray-300 px-3 py-2 font-['Inter']" style="background-color: white;">--</td>
+            </tr>
+        </tbody>
+    </table></div>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <script src="header.js"></script>
+    
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a?e+="."+a:t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+        
+        // Track page view
+        posthog.capture('page_viewed', {
+            page_title: 'Current Predictions',
+            page_type: 'predictions',
+            page_url: window.location.href
+        })
+    </script>
+</body>
+</html>
