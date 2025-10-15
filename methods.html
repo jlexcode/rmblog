@@ -79,11 +79,15 @@
                 
                     <p class="mb-4">The model performs well relative to benchmarks on OT2024. However, this is a difficult task and there are limits in model performance. Here are some of the main limitations:
                         <ul class="list-disc list-inside">
-                            <li>Drift. It is possible that the feature's that are predictive of the Court's behavior will change over time. This could be because the docket changes, the composition of the Court changes, or the decision-environment changes.</li>
+                            <li>Drift. It is possible that the features that are predictive of the Court's behavior will change over time. This could be because the docket changes, the composition of the Court changes, or the decision-environment changes.</li>
                             <br>
                             <li>Generalizability. Even without drift, it is possible that OT2024 is unrepresentative of the Court's behavior in the current term. The Court's behavior may be more similar to OT2023 or OT2019.</li>
                             <br>
-                            <li>Explainability. The model contains tens of billions of parameters and is therefore difficult to interpret. Part of this research exercise is to investigate the model's behavior and engage close readings of the underlying material.</li>
+                            <li>Data quality and availability. The model's performance depends on the quality and completeness of the underlying data sources (party filings, lower court decisions, oral arguments, amicus briefs). Missing or incomplete data could significantly impact predictions.</li>
+                            <br>
+                            <li>External factors. The model may not adequately capture external factors that influence Court decisions, such as public opinion, political pressure, or broader social and economic contexts.</li>
+                            <br>
+                            <li>Explainability. The models used contain tens or hundreds of billions of parameters and it is therefore difficult to interpret. Part of this research exercise is to pair the model predictions with close readings of the underlying material.</li>
                         </ul>
                     </p>
 
