@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Back to basics - no rich text editor -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
 </head>
@@ -66,6 +67,16 @@
                 </div>
             </div>
 
+            <!-- Manage Methods Section -->
+            <div class="p-6 border border-gray-300 rounded-lg">
+                <h2 class="text-xl font-['Space_Mono'] mb-4">Manage Methods</h2>
+                <div class="mb-4">
+                    <button id="load-current-methods-btn" class="bg-blue-600 text-white px-4 py-2 rounded font-['Space_Mono'] hover:bg-blue-700">
+                        Load Current Methods for Editing
+                    </button>
+                </div>
+            </div>
+
             <!-- Post Form -->
             <div class="p-6 border border-gray-300 rounded-lg">
                 <div class="flex justify-between items-center mb-4">
@@ -93,10 +104,57 @@
                                   placeholder="Excerpt will be generated automatically as you type content..."></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2 font-['Inter']">Content</label>
-                        <textarea id="post-content" rows="10" required 
-                                  class="w-full p-3 border border-gray-300 rounded font-['Inter']" 
-                                  placeholder="Write your post content here..."></textarea>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-sm font-medium font-['Inter']">Content</label>
+                            <div class="flex space-x-2">
+                                <button id="bold-btn" type="button" 
+                                        class="bg-gray-600 text-white px-2 py-1 rounded text-sm font-['Space_Mono'] hover:bg-gray-700"
+                                        title="Bold">
+                                    <strong>B</strong>
+                                </button>
+                                <button id="italic-btn" type="button" 
+                                        class="bg-gray-600 text-white px-2 py-1 rounded text-sm font-['Space_Mono'] hover:bg-gray-700"
+                                        title="Italic">
+                                    <em>I</em>
+                                </button>
+                                <button id="underline-btn" type="button" 
+                                        class="bg-gray-600 text-white px-2 py-1 rounded text-sm font-['Space_Mono'] hover:bg-gray-700"
+                                        title="Underline">
+                                    <u>U</u>
+                                </button>
+                                <button id="h1-btn" type="button" 
+                                        class="bg-gray-600 text-white px-2 py-1 rounded text-sm font-['Space_Mono'] hover:bg-gray-700"
+                                        title="Header 1">
+                                    H1
+                                </button>
+                                <button id="h2-btn" type="button" 
+                                        class="bg-gray-600 text-white px-2 py-1 rounded text-sm font-['Space_Mono'] hover:bg-gray-700"
+                                        title="Header 2">
+                                    H2
+                                </button>
+                                <button id="h3-btn" type="button" 
+                                        class="bg-gray-600 text-white px-2 py-1 rounded text-sm font-['Space_Mono'] hover:bg-gray-700"
+                                        title="Header 3">
+                                    H3
+                                </button>
+                                <button id="insert-link-btn" type="button" 
+                                        class="bg-blue-600 text-white px-3 py-1 rounded text-sm font-['Space_Mono'] hover:bg-blue-700">
+                                    + Link
+                                </button>
+                                <button id="insert-table-btn" type="button" 
+                                        class="bg-green-600 text-white px-3 py-1 rounded text-sm font-['Space_Mono'] hover:bg-green-700">
+                                    + Table
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="post-content" rows="15" required 
+                                  class="w-full p-3 border border-gray-300 rounded font-['Inter'] font-mono text-sm" 
+                                  placeholder="Enter HTML content here... You can use the buttons above to insert formatting, or write raw HTML directly."></textarea>
+                        
+                        <!-- HTML Help -->
+                        <div class="mt-2 text-xs text-gray-600 font-['Inter']">
+                            <strong>HTML Tips:</strong> Use &lt;p&gt; for paragraphs, &lt;h1&gt;&lt;h2&gt;&lt;h3&gt; for headers, &lt;ul&gt;&lt;li&gt; for lists, &lt;table&gt; for tables
+                        </div>
                     </div>
                     <div class="flex items-center mb-4">
                         <input type="checkbox" id="post-featured" 
@@ -105,11 +163,18 @@
                             Feature this post (show prominently on homepage)
                         </label>
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex items-center mb-2">
                         <input type="checkbox" id="save-as-predictions" 
                                class="w-4 h-4 text-black border border-gray-300 rounded focus:ring-black">
                         <label for="save-as-predictions" class="ml-2 text-sm font-medium font-['Inter']">
                             Save as Predictions Table (instead of blog post)
+                        </label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="save-as-methods" 
+                               class="w-4 h-4 text-black border border-gray-300 rounded focus:ring-black">
+                        <label for="save-as-methods" class="ml-2 text-sm font-medium font-['Inter']">
+                            Save as Methods Page (instead of blog post)
                         </label>
                     </div>
                 </form>
@@ -117,8 +182,9 @@
 
             <!-- CSV Table Upload -->
             <div class="p-6 border border-gray-300 rounded-lg">
-                <h2 class="text-xl font-['Space_Mono'] mb-4">Add Table from CSV</h2>
+                <h2 class="text-xl font-['Space_Mono'] mb-4">Add Tables</h2>
                 <div class="space-y-4">
+                    <!-- CSV Upload -->
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                         <input type="file" id="csv-upload" accept=".csv" class="hidden">
                         <label for="csv-upload" class="cursor-pointer">
@@ -128,6 +194,8 @@
                             </div>
                         </label>
                     </div>
+                    
+
                     <div id="csv-preview" class="hidden">
                         <h3 class="font-['Space_Mono'] mb-2">Table Preview</h3>
                         <div id="table-preview" class="overflow-x-auto border border-gray-300 rounded"></div>
@@ -163,44 +231,6 @@
                 </div>
             </div>
 
-            <!-- Link Insertion -->
-            <div class="p-6 border border-gray-300 rounded-lg">
-                <h2 class="text-xl font-['Space_Mono'] mb-4">Add Links</h2>
-                <div class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-2 font-['Inter']">Link URL</label>
-                            <input type="url" id="link-url" 
-                                   class="w-full p-3 border border-gray-300 rounded font-['Inter']"
-                                   placeholder="https://example.com">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-2 font-['Inter']">Link Text</label>
-                            <input type="text" id="link-text" 
-                                   class="w-full p-3 border border-gray-300 rounded font-['Inter']"
-                                   placeholder="Click here">
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="link-new-tab" 
-                                   class="w-4 h-4 text-black border border-gray-300 rounded focus:ring-black">
-                            <label for="link-new-tab" class="ml-2 text-sm font-medium font-['Inter']">
-                                Open in new tab
-                            </label>
-                        </div>
-                        <button id="insert-link-btn" class="bg-black text-white px-4 py-2 rounded font-['Space_Mono'] hover:bg-gray-800">
-                            Insert Link into Post
-                        </button>
-                    </div>
-                    <div id="link-preview" class="hidden">
-                        <h3 class="font-['Space_Mono'] mb-2 text-sm">Link Preview</h3>
-                        <div class="p-3 bg-gray-50 border border-gray-300 rounded">
-                            <a id="preview-link" href="#" class="text-blue-600 underline font-['Inter']" target="_blank">Preview link</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Publish Section -->
             <div class="p-6 border border-gray-300 rounded-lg">
@@ -208,11 +238,48 @@
                 <div class="space-y-4">
                     <div id="post-preview" class="border border-gray-300 rounded-lg p-4 bg-gray-50">
                         <h3 class="font-['Space_Mono'] mb-2">Post Preview</h3>
-                        <div id="preview-content" class="max-w-none font-['Inter'] leading-relaxed"></div>
+                        <div id="preview-content" class="max-w-none font-['Inter'] leading-relaxed whitespace-pre-wrap"></div>
                     </div>
                     <button id="publish-btn" class="bg-green-600 text-white px-6 py-3 rounded font-['Space_Mono'] hover:bg-green-700">
                         Publish Post
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Link Insertion Modal -->
+        <div id="link-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                    <h3 class="text-lg font-['Space_Mono'] mb-4">Insert Link</h3>
+                    <div class="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
+                        <p class="text-sm text-blue-800 font-['Inter']">
+                            <strong>Tip:</strong> Select text in the content area first, then enter the URL below.
+                        </p>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium font-['Inter'] mb-1">URL</label>
+                            <input type="url" id="modal-link-url" 
+                                   class="w-full p-2 border border-gray-300 rounded font-['Inter']"
+                                   placeholder="https://example.com">
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="modal-link-new-tab" 
+                                   class="mr-2">
+                            <label for="modal-link-new-tab" class="text-sm font-['Inter']">Open in new tab</label>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-2 mt-6">
+                        <button id="cancel-link-btn" type="button"
+                                class="px-4 py-2 text-gray-600 border border-gray-300 rounded font-['Space_Mono'] hover:bg-gray-50">
+                            Cancel
+                        </button>
+                        <button id="insert-link-modal-btn" type="button"
+                                class="px-4 py-2 bg-blue-600 text-white rounded font-['Space_Mono'] hover:bg-blue-700">
+                            Insert Link
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -227,6 +294,7 @@
         posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
     </script>
 
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script src="admin.js"></script>
 </body>

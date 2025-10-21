@@ -4,4 +4,100 @@
     color: #3b82f6; /* same blue as about page */
 }
 
+/* Match your site's header styles for methods page content */
+.prose h1 {
+    font-size: 1.875rem !important; /* text-3xl */
+    font-weight: normal !important;
+    color: #000 !important;
+    font-family: 'Space Mono', monospace !important;
+    margin: 1.5rem 0 1rem 0 !important;
+    line-height: 1.2 !important;
+}
+
+.prose h2 {
+    font-size: 1.5rem !important; /* text-2xl */
+    font-weight: normal !important;
+    color: #000 !important;
+    font-family: 'Space Mono', monospace !important;
+    margin: 1.25rem 0 0.75rem 0 !important;
+    line-height: 1.2 !important;
+}
+
+.prose h3 {
+    font-size: 1.25rem !important; /* text-xl */
+    font-weight: normal !important;
+    color: #000 !important;
+    font-family: 'Space Mono', monospace !important;
+    margin: 1rem 0 0.5rem 0 !important;
+    line-height: 1.2 !important;
+}
+
+/* Ensure headers are visible in admin preview */
+#preview-content h1,
+#preview-content h2,
+#preview-content h3,
+#preview-content h4,
+#preview-content h5,
+#preview-content h6 {
+    display: block !important;
+    font-weight: bold !important;
+    margin: 1em 0 0.5em 0 !important;
+    line-height: 1.2 !important;
+    color: #000 !important;
+}
+
+#preview-content h1 {
+    font-size: 2em !important;
+}
+
+#preview-content h2 {
+    font-size: 1.5em !important;
+}
+
+#preview-content h3 {
+    font-size: 1.25em !important;
+}
+
+/* Style lists in admin preview */
+#preview-content ul, #preview-content ol {
+    margin: 1rem 0 !important;
+    padding-left: 1.5rem !important;
+    list-style-type: disc !important;
+    display: block !important;
+}
+
+#preview-content li {
+    margin-bottom: 0.5rem !important;
+    line-height: 1.6 !important;
+    display: list-item !important;
+}
+
+#preview-content ul li {
+    list-style-type: disc !important;
+}
+
+#preview-content ol li {
+    list-style-type: decimal !important;
+}
+
+/* Style HTML lists in methods page */
+.prose ul, .prose ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.prose li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.prose ul li {
+    list-style-type: disc;
+}
+
+.prose ol li {
+    list-style-type: decimal;
+}
+
 /* Add more shared styles here as needed */

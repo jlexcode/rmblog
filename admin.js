@@ -21,11 +21,6 @@ class AdminPanel {
             imageUpload.addEventListener('change', (e) => this.handleImageUpload(e));
         }
 
-        // Insert table button
-        const insertTableBtn = document.getElementById('insert-table-btn');
-        if (insertTableBtn) {
-            insertTableBtn.addEventListener('click', () => this.insertTableIntoPost());
-        }
 
         // Publish button
         const publishBtn = document.getElementById('publish-btn');
@@ -57,6 +52,12 @@ class AdminPanel {
             loadCurrentPredictionsBtn.addEventListener('click', () => this.loadCurrentPredictions());
         }
 
+        // Load current methods button
+        const loadCurrentMethodsBtn = document.getElementById('load-current-methods-btn');
+        if (loadCurrentMethodsBtn) {
+            loadCurrentMethodsBtn.addEventListener('click', () => this.loadCurrentMethods());
+        }
+
         // New post button
         const newPostBtn = document.getElementById('new-post-btn');
         if (newPostBtn) {
@@ -64,18 +65,57 @@ class AdminPanel {
         }
 
         // Link insertion
-        const insertLinkBtn = document.getElementById('insert-link-btn');
-        if (insertLinkBtn) {
-            insertLinkBtn.addEventListener('click', () => this.insertLinkIntoPost());
+        // Formatting buttons
+        const boldBtn = document.getElementById('bold-btn');
+        const italicBtn = document.getElementById('italic-btn');
+        const underlineBtn = document.getElementById('underline-btn');
+        const h1Btn = document.getElementById('h1-btn');
+        const h2Btn = document.getElementById('h2-btn');
+        const h3Btn = document.getElementById('h3-btn');
+        
+        if (boldBtn) {
+            boldBtn.addEventListener('click', () => this.insertFormatting('bold'));
+        }
+        if (italicBtn) {
+            italicBtn.addEventListener('click', () => this.insertFormatting('italic'));
+        }
+        if (underlineBtn) {
+            underlineBtn.addEventListener('click', () => this.insertFormatting('underline'));
+        }
+        if (h1Btn) {
+            h1Btn.addEventListener('click', () => this.insertFormatting('h1'));
+        }
+        if (h2Btn) {
+            h2Btn.addEventListener('click', () => this.insertFormatting('h2'));
+        }
+        if (h3Btn) {
+            h3Btn.addEventListener('click', () => this.insertFormatting('h3'));
         }
 
-        // Link URL and text inputs for preview
-        const linkUrlInput = document.getElementById('link-url');
-        const linkTextInput = document.getElementById('link-text');
-        if (linkUrlInput && linkTextInput) {
-            linkUrlInput.addEventListener('input', () => this.updateLinkPreview());
-            linkTextInput.addEventListener('input', () => this.updateLinkPreview());
+        // Link insertion button
+        const insertLinkBtn = document.getElementById('insert-link-btn');
+        if (insertLinkBtn) {
+            insertLinkBtn.addEventListener('click', () => this.showLinkModal());
         }
+        
+        // Table insertion button
+        const insertTableBtn = document.getElementById('insert-table-btn');
+        if (insertTableBtn) {
+            insertTableBtn.addEventListener('click', () => this.insertTable());
+        }
+
+        // Link modal buttons
+        const cancelLinkBtn = document.getElementById('cancel-link-btn');
+        const insertLinkModalBtn = document.getElementById('insert-link-modal-btn');
+        if (cancelLinkBtn) {
+            cancelLinkBtn.addEventListener('click', () => this.hideLinkModal());
+        }
+        if (insertLinkModalBtn) {
+            insertLinkModalBtn.addEventListener('click', () => this.insertLinkFromModal());
+        }
+
+
+
     }
 
     setupDragAndDrop() {
@@ -163,13 +203,16 @@ class AdminPanel {
     }
 
     insertTableIntoPost() {
-        if (!this.currentTableData) return;
+        if (!this.currentTableData) {
+            window.adminAuth.showStatus('No table data available. Please create or upload a table first.', 'error');
+            return;
+        }
 
         const caption = document.getElementById('table-caption').value.trim();
-        const contentArea = document.getElementById('post-content');
         const tableHTML = this.generateTableHTML(this.currentTableData, caption);
         
-        // Insert at cursor position or at end
+        // Insert into textarea
+        const contentArea = document.getElementById('post-content');
         const cursorPos = contentArea.selectionStart;
         const textBefore = contentArea.value.substring(0, cursorPos);
         const textAfter = contentArea.value.substring(cursorPos);
@@ -182,12 +225,164 @@ class AdminPanel {
         window.adminAuth.showStatus('Table inserted into post', 'success');
     }
 
+
+
+
     generateTableHTML(data, caption) {
         const headers = Object.keys(data[0]);
         const tableHTML = `<div class="overflow-x-auto my-2"><table class="w-full border-collapse border border-gray-300"><thead><tr class="bg-gray-100">${headers.map(h => `<th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">${h}</th>`).join('')}</tr></thead><tbody>${data.map(row => `<tr class="hover:bg-gray-50">${headers.map(h => `<td class="border border-gray-300 px-3 py-2 font-['Inter']">${row[h] || ''}</td>`).join('')}</tr>`).join('')}</tbody></table>${caption ? `<p class="text-sm text-gray-600 mt-1 text-center font-['Inter'] italic">${caption}</p>` : ''}</div>`;
         
         return tableHTML;
     }
+
+    // Link Modal Methods
+    showLinkModal() {
+        const modal = document.getElementById('link-modal');
+        modal.classList.remove('hidden');
+        
+        // Focus on the link text input
+        document.getElementById('modal-link-text').focus();
+    }
+
+    hideLinkModal() {
+        const modal = document.getElementById('link-modal');
+        modal.classList.add('hidden');
+        
+        // Clear the form
+        document.getElementById('modal-link-url').value = '';
+        document.getElementById('modal-link-new-tab').checked = false;
+    }
+
+    insertLinkFromModal() {
+        const url = document.getElementById('modal-link-url').value.trim();
+        const newTab = document.getElementById('modal-link-new-tab').checked;
+
+        if (!url) {
+            window.adminAuth.showStatus('Please enter a URL', 'error');
+            return;
+        }
+
+        // Validate and normalize URL
+        let normalizedUrl = url;
+        if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('mailto:')) {
+            normalizedUrl = 'https://' + url;
+        }
+        
+        try {
+            new URL(normalizedUrl);
+        } catch {
+            window.adminAuth.showStatus('Please enter a valid URL', 'error');
+            return;
+        }
+
+        // Get selected text from textarea
+        const contentArea = document.getElementById('post-content');
+        const start = contentArea.selectionStart;
+        const end = contentArea.selectionEnd;
+        const selectedText = contentArea.value.substring(start, end);
+        
+        if (!selectedText.trim()) {
+            window.adminAuth.showStatus('Please select text to link', 'error');
+            return;
+        }
+
+        // Generate link HTML
+        const linkHTML = this.generateLinkHTML(normalizedUrl, selectedText, newTab);
+        
+        // Insert into textarea
+        const textBefore = contentArea.value.substring(0, start);
+        const textAfter = contentArea.value.substring(end);
+        
+        contentArea.value = textBefore + linkHTML + textAfter;
+        
+        // Update preview
+        this.updatePostPreview();
+        
+        // Hide modal and clear form
+        this.hideLinkModal();
+        
+        window.adminAuth.showStatus('Link inserted', 'success');
+    }
+    
+    insertTable() {
+        const contentArea = document.getElementById('post-content');
+        const start = contentArea.selectionStart;
+        const end = contentArea.selectionEnd;
+        
+        const tableHtml = `<table>
+  <thead>
+    <tr>
+      <th>Header 1</th>
+      <th>Header 2</th>
+      <th>Header 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Row 1, Cell 1</td>
+      <td>Row 1, Cell 2</td>
+      <td>Row 1, Cell 3</td>
+    </tr>
+    <tr>
+      <td>Row 2, Cell 1</td>
+      <td>Row 2, Cell 2</td>
+      <td>Row 2, Cell 3</td>
+    </tr>
+  </tbody>
+</table>`;
+        
+        const textBefore = contentArea.value.substring(0, start);
+        const textAfter = contentArea.value.substring(end);
+        contentArea.value = textBefore + tableHtml + textAfter;
+        
+        // Update preview
+        this.updatePostPreview();
+        
+        window.adminAuth.showStatus('Table template inserted', 'success');
+    }
+
+    // Formatting Methods
+    insertFormatting(type) {
+        const contentArea = document.getElementById('post-content');
+        const start = contentArea.selectionStart;
+        const end = contentArea.selectionEnd;
+        const selectedText = contentArea.value.substring(start, end);
+        
+        let formattedText;
+        switch (type) {
+            case 'bold':
+                formattedText = `<strong>${selectedText || 'bold text'}</strong>`;
+                break;
+            case 'italic':
+                formattedText = `<em>${selectedText || 'italic text'}</em>`;
+                break;
+            case 'underline':
+                formattedText = `<u>${selectedText || 'underlined text'}</u>`;
+                break;
+            case 'h1':
+                formattedText = `<h1>${selectedText || 'Header 1'}</h1>`;
+                break;
+            case 'h2':
+                formattedText = `<h2>${selectedText || 'Header 2'}</h2>`;
+                break;
+            case 'h3':
+                formattedText = `<h3>${selectedText || 'Header 3'}</h3>`;
+                break;
+        }
+        
+        // Insert formatted text
+        const textBefore = contentArea.value.substring(0, start);
+        const textAfter = contentArea.value.substring(end);
+        
+        contentArea.value = textBefore + formattedText + textAfter;
+        
+        // Update preview
+        this.updatePostPreview();
+        
+        // Show success message
+        window.adminAuth.showStatus(`${type.charAt(0).toUpperCase() + type.slice(1)} formatting applied`, 'success');
+    }
+
 
     handleImageUpload(event) {
         const files = Array.from(event.target.files);
@@ -341,10 +536,10 @@ class AdminPanel {
         const image = this.uploadedImages[index];
         if (!image) return;
 
-        const contentArea = document.getElementById('post-content');
         const imageHTML = this.generateImageHTML(image);
         
-        // Insert at cursor position or at end
+        // Insert into textarea
+        const contentArea = document.getElementById('post-content');
         const cursorPos = contentArea.selectionStart;
         const textBefore = contentArea.value.substring(0, cursorPos);
         const textAfter = contentArea.value.substring(cursorPos);
@@ -362,87 +557,12 @@ class AdminPanel {
         return `<figure class="my-2"><img src="${image.url}" alt="${caption || image.name}" class="w-full rounded-lg shadow-sm">${caption ? `<figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">${caption}</figcaption>` : ''}</figure>`;
     }
 
-    insertLinkIntoPost() {
-        const urlInput = document.getElementById('link-url');
-        const textInput = document.getElementById('link-text');
-        const newTabCheckbox = document.getElementById('link-new-tab');
-        const contentArea = document.getElementById('post-content');
-
-        const url = urlInput.value.trim();
-        const text = textInput.value.trim();
-
-        if (!url || !text) {
-            window.adminAuth.showStatus('Please enter both URL and link text', 'error');
-            return;
-        }
-
-        // Validate URL
-        try {
-            new URL(url);
-        } catch {
-            window.adminAuth.showStatus('Please enter a valid URL', 'error');
-            return;
-        }
-
-        const linkHTML = this.generateLinkHTML(url, text, newTabCheckbox.checked);
-        
-        // Insert at cursor position or at end
-        const cursorPos = contentArea.selectionStart;
-        const textBefore = contentArea.value.substring(0, cursorPos);
-        const textAfter = contentArea.value.substring(cursorPos);
-        
-        contentArea.value = textBefore + linkHTML + textAfter;
-        
-        // Update preview
-        this.updatePostPreview();
-        
-        // Clear the form
-        urlInput.value = '';
-        textInput.value = '';
-        newTabCheckbox.checked = false;
-        this.updateLinkPreview();
-        
-        window.adminAuth.showStatus('Link inserted into post', 'success');
-        
-        // Track link insertion
-        if (window.posthog) {
-            posthog.capture('admin_link_inserted', {
-                url: url,
-                text: text,
-                new_tab: newTabCheckbox.checked
-            });
-        }
-    }
 
     generateLinkHTML(url, text, newTab = false) {
         const target = newTab ? ' target="_blank" rel="noopener noreferrer"' : '';
         return `<a href="${url}"${target}>${text}</a>`;
     }
 
-    updateLinkPreview() {
-        const urlInput = document.getElementById('link-url');
-        const textInput = document.getElementById('link-text');
-        const newTabCheckbox = document.getElementById('link-new-tab');
-        const previewDiv = document.getElementById('link-preview');
-        const previewLink = document.getElementById('preview-link');
-
-        const url = urlInput.value.trim();
-        const text = textInput.value.trim();
-
-        if (url && text) {
-            try {
-                new URL(url); // Validate URL
-                previewLink.href = url;
-                previewLink.textContent = text;
-                previewLink.target = newTabCheckbox.checked ? '_blank' : '_self';
-                previewDiv.classList.remove('hidden');
-            } catch {
-                previewDiv.classList.add('hidden');
-            }
-        } else {
-            previewDiv.classList.add('hidden');
-        }
-    }
 
     generateSlug() {
         const title = document.getElementById('post-title').value;
@@ -460,7 +580,7 @@ class AdminPanel {
     }
 
     generateExcerpt() {
-        const content = document.getElementById('post-content').value;
+        const content = this.getContent();
         const excerptInput = document.getElementById('post-excerpt');
         
         if (content && excerptInput) {
@@ -483,31 +603,27 @@ class AdminPanel {
     }
 
     updatePostPreview() {
-        const content = document.getElementById('post-content').value;
+        const content = this.getContent();
         const preview = document.getElementById('preview-content');
         
         if (preview && content) {
-            // Check if content contains HTML tables
-            if (content.includes('<table') || content.includes('<div class="overflow-x-auto')) {
-                // For HTML content, render directly without text processing
-                preview.innerHTML = content;
-            } else {
-                // For plain text content, do the existing processing
-                preview.innerHTML = content
-                    // First, handle line breaks around HTML elements more aggressively
-                    .replace(/\n+<div/g, '<div')     // Remove any line breaks before tables
-                    .replace(/\n+<figure/g, '<figure') // Remove any line breaks before figures
-                    .replace(/\n\n/g, '<br><br>')    // Convert double line breaks to paragraphs
-                    .replace(/\n/g, '<br>')          // Convert remaining single line breaks
-                    // Remove top margins completely in preview
-                    .replace(/class="my-2"/g, 'class="mb-2"')  // Only bottom margin
-                    .replace(/class="my-1"/g, 'class="mb-1"')  // Only bottom margin
-                    .replace(/class="mt-0 mb-2"/g, 'class="mb-2"')  // Clean up if already processed
-                    .replace(/class="mt-0 mb-1"/g, 'class="mb-1"')  // Clean up if already processed
-                    // Style tables and images
-                    .replace(/<table/g, '<table class="w-full border-collapse border border-gray-300"')
-                    .replace(/<img/g, '<img class="w-full rounded-lg shadow-sm"');
-            }
+            // Render HTML directly with proper styling
+            preview.innerHTML = content
+                // Style tables (only if they don't already have classes)
+                .replace(/<table(?!\s+class)/g, '<table class="w-full border-collapse border border-gray-300"')
+                .replace(/<th(?!\s+class)/g, '<th class="border border-gray-300 px-3 py-2 text-left font-[\'Space_Mono\'] font-medium"')
+                .replace(/<td(?!\s+class)/g, '<td class="border border-gray-300 px-3 py-2 font-[\'Inter\']"')
+                .replace(/<tr(?!\s+class)/g, '<tr class="hover:bg-gray-50"')
+                // Style images (only if they don't already have classes)
+                .replace(/<img(?!\s+class)/g, '<img class="w-full rounded-lg shadow-sm"')
+                // Style links
+                .replace(/<a\s+([^>]*?)>/g, (match, attributes) => {
+                    if (attributes.includes('class=')) {
+                        return match.replace(/class="([^"]*?)"/, 'class="$1 post-link"')
+                    } else {
+                        return `<a ${attributes} class="post-link">`
+                    }
+                });
         }
     }
 
@@ -616,7 +732,7 @@ class AdminPanel {
             
             // Populate the form with current prediction data
             document.getElementById('post-title').value = data.title;
-            document.getElementById('post-content').value = data.table_content;
+            this.setContent(data.table_content);
             document.getElementById('save-as-predictions').checked = true;
             
             // Update form title
@@ -630,6 +746,47 @@ class AdminPanel {
         } catch (error) {
             console.error('Error loading current predictions:', error);
             window.adminAuth.showStatus(`Error loading predictions: ${error.message}`, 'error');
+        }
+    }
+
+    async loadCurrentMethods() {
+        try {
+            window.adminAuth.showStatus('Loading current methods...', 'info');
+            
+            const SUPABASE_URL = 'https://xlglobsjkfpfpkxlivki.supabase.co'
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZ2xvYnNqa2ZwZnBreGxpdmtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTg2NDYsImV4cCI6MjA3MjMzNDY0Nn0.6_zXfDYP8C23FBJZTGKz2ecK74-md4-t9ellPENGWCc'
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            const { data, error } = await supabaseClient
+                .from('methods_table')
+                .select('*')
+                .eq('id', 1)
+                .single();
+            
+            if (error) {
+                if (error.code === 'PGRST116') {
+                    window.adminAuth.showStatus('No current methods found', 'error');
+                    return;
+                }
+                throw error;
+            }
+            
+            // Populate the form with current methods data
+            document.getElementById('post-title').value = data.title;
+            this.setContent(data.content);
+            document.getElementById('save-as-methods').checked = true;
+            
+            // Update form title
+            document.getElementById('form-title').textContent = 'Edit Current Methods';
+            
+            // Update preview
+            this.updatePostPreview();
+            
+            window.adminAuth.showStatus('Current methods loaded for editing', 'success');
+            
+        } catch (error) {
+            console.error('Error loading current methods:', error);
+            window.adminAuth.showStatus(`Error loading methods: ${error.message}`, 'error');
         }
     }
 
@@ -653,7 +810,7 @@ class AdminPanel {
             document.getElementById('post-title').value = data.title || '';
             document.getElementById('post-slug').value = data.slug || '';
             document.getElementById('post-excerpt').value = data.excerpt || '';
-            document.getElementById('post-content').value = data.content || '';
+            this.setContent(data.content || '');
             document.getElementById('post-featured').checked = data.featured || false;
             
             // Set editing mode
@@ -706,17 +863,12 @@ class AdminPanel {
 
     clearForm() {
         document.getElementById('post-form').reset();
-        document.getElementById('post-content').value = '';
+        this.setContent('');
         document.getElementById('post-featured').checked = false;
         document.getElementById('save-as-predictions').checked = false; // Reset to default (post)
         this.editingPostId = null;
         document.getElementById('form-title').textContent = 'Create New Post';
         
-        // Clear link inputs
-        document.getElementById('link-url').value = '';
-        document.getElementById('link-text').value = '';
-        document.getElementById('link-new-tab').checked = false;
-        this.updateLinkPreview();
         
         this.updatePostPreview();
     }
@@ -725,9 +877,10 @@ class AdminPanel {
         const title = document.getElementById('post-title').value.trim();
         const slug = document.getElementById('post-slug').value.trim();
         const excerpt = document.getElementById('post-excerpt').value.trim();
-        const content = document.getElementById('post-content').value.trim();
+        const content = this.getContent().trim();
         const featured = document.getElementById('post-featured').checked;
         const saveAsPredictions = document.getElementById('save-as-predictions').checked;
+        const saveAsMethods = document.getElementById('save-as-methods').checked;
 
         if (!title || !content) {
             window.adminAuth.showStatus('Please fill in title and content', 'error');
@@ -735,7 +888,7 @@ class AdminPanel {
         }
 
         // For regular posts, slug is required
-        if (!saveAsPredictions && !slug) {
+        if (!saveAsPredictions && !saveAsMethods && !slug) {
             window.adminAuth.showStatus('Please fill in slug for blog post', 'error');
             return;
         }
@@ -758,6 +911,10 @@ class AdminPanel {
                 // Save as predictions table (always creates new version)
                 await this.savePredictionsTable(content, title, supabaseClient);
                 window.adminAuth.showStatus('Predictions table updated successfully!', 'success');
+            } else if (saveAsMethods) {
+                // Save as methods page (always creates new version)
+                await this.saveMethodsTable(content, title, supabaseClient);
+                window.adminAuth.showStatus('Methods page updated successfully!', 'success');
             } else {
                 // Save as regular blog post (existing logic)
                 // If featuring this post, unfeatured all other posts first
@@ -861,6 +1018,43 @@ class AdminPanel {
         if (updateError) throw updateError;
     }
 
+    async saveMethodsTable(content, title, supabaseClient) {
+        // Save to Supabase for versioning (create new entry each time)
+        const { error } = await supabaseClient
+            .from('methods_table')
+            .insert([{ 
+                title: title,
+                content: content,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            }]);
+        
+        if (error) throw error;
+        
+        // Also update the "current" record (id=1) for the build script
+        const { error: updateError } = await supabaseClient
+            .from('methods_table')
+            .upsert([{ 
+                id: 1, // Current record for build script
+                title: title,
+                content: content,
+                updated_at: new Date().toISOString()
+            }]);
+        
+        if (updateError) throw updateError;
+    }
+
+
+    // Override getContent method to work with all modes
+    getContent() {
+        return document.getElementById('post-content').value;
+    }
+
+    // Override setContent method to work with all modes
+    setContent(content) {
+        document.getElementById('post-content').value = content;
+    }
+
 
 }
 
@@ -873,4 +1067,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contentArea) {
         contentArea.addEventListener('input', () => window.adminPanel.updatePostPreview());
     }
+    
+    // Back to basics - no rich text editor needed
 });

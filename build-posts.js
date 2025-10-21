@@ -58,13 +58,22 @@ const postTemplate = (post) => `
             </header>
             
             <article class="prose prose-lg max-w-none">
-                <div class="text-black leading-relaxed font-['Inter']">${post.content.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>').replace(/<a\s+([^>]*?)>/g, (match, attributes) => {
-                    if (attributes.includes('class=')) {
-                        return match.replace(/class="([^"]*?)"/, 'class="$1 post-link"')
-                    } else {
-                        return `<a ${attributes} class="post-link">`
-                    }
-                })}</div>
+                <div class="text-black leading-relaxed font-['Inter'] whitespace-pre-wrap">${post.content
+                    // Style tables (only if they don't already have classes)
+                    .replace(/<table(?!\s+class)/g, '<table class="w-full border-collapse border border-gray-300"')
+                    .replace(/<th(?!\s+class)/g, '<th class="border border-gray-300 px-3 py-2 text-left font-[\'Space_Mono\'] font-medium"')
+                    .replace(/<td(?!\s+class)/g, '<td class="border border-gray-300 px-3 py-2 font-[\'Inter\']"')
+                    .replace(/<tr(?!\s+class)/g, '<tr class="hover:bg-gray-50"')
+                    // Style images (only if they don't already have classes)
+                    .replace(/<img(?!\s+class)/g, '<img class="w-full rounded-lg shadow-sm"')
+                    // Style links
+                    .replace(/<a\s+([^>]*?)>/g, (match, attributes) => {
+                        if (attributes.includes('class=')) {
+                            return match.replace(/class="([^"]*?)"/, 'class="$1 post-link"')
+                        } else {
+                            return `<a ${attributes} class="post-link">`
+                        }
+                    })}</div>
             </article>
         </div>
     </div>
@@ -211,7 +220,7 @@ function generateIndexHtml(featuredPosts, regularPosts) {
 }
 
 // Generate sitemap.xml
-function generateSitemap(posts, hasPredictions = false) {
+function generateSitemap(posts, hasPredictions = false, hasMethods = false) {
   console.log('Generating sitemap.xml...')
   
   const baseUrl = 'https://reasonablemachines.io'
@@ -247,6 +256,17 @@ function generateSitemap(posts, hasPredictions = false) {
         <lastmod>${currentDate}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+    </url>`
+  }
+  
+  // Add methods page if it exists
+  if (hasMethods) {
+    sitemap += `
+    <url>
+        <loc>${baseUrl}/methods.html</loc>
+        <lastmod>${currentDate}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>`
   }
   
@@ -372,6 +392,103 @@ async function generatePredictionsPage() {
   return true
 }
 
+// Template for methods page HTML
+const methodsTemplate = (methods) => `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Methodology & Validation - Reasonable Machines</title>
+    <meta name="description" content="Methods behind the predictions: data sources, features, modeling choices, training, evaluation, and limitations.">
+    <meta name="keywords" content="Supreme Court predictions, methodology, validation, model evaluation, legal AI">
+    <meta name="author" content="Jed Stiglitz">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://reasonablemachines.io/methods.html">
+    <meta property="og:title" content="Methodology & Validation - Reasonable Machines">
+    <meta property="og:description" content="Methods behind the predictions: data, modeling, evaluation, and limitations.">
+    <meta property="og:site_name" content="Reasonable Machines">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://reasonablemachines.io/methods.html">
+    <meta property="twitter:title" content="Methodology & Validation - Reasonable Machines">
+    <meta property="twitter:description" content="Methods behind the predictions: data, modeling, evaluation, and limitations.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/methods.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        
+        <header class="mb-8">
+            <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">Methodology & Validation</h1>
+        </header>
+
+        <main class="space-y-6">
+            <article class="prose prose-lg max-w-none">
+                <div class="whitespace-pre-wrap">${methods.content}</div>
+            </article>
+        </main>
+    </div>
+
+    <script src="header.js"></script>
+    
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a?e+="."+a:t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+        
+        // Track page view
+        posthog.capture('page_viewed', {
+            page_title: 'Methodology & Validation',
+            page_type: 'methods',
+            page_url: window.location.href
+        })
+    </script>
+</body>
+</html>`
+
+// Generate methods page
+async function generateMethodsPage() {
+  console.log('Fetching methods from Supabase...')
+  
+  const { data: methods, error } = await supabase
+    .from('methods_table')
+    .select('*')
+    .eq('id', 1)
+    .single()
+  
+  if (error) {
+    if (error.code === 'PGRST116') {
+      console.log('No methods table found, skipping...')
+      return false
+    }
+    console.error('Error fetching methods:', error)
+    return false
+  }
+  
+  if (!methods || !methods.content) {
+    console.log('No methods content found, skipping...')
+    return false
+  }
+  
+  // Generate HTML using template
+  const html = methodsTemplate(methods)
+  
+  // Write the methods.html file
+  fs.writeFileSync('methods.html', html)
+  console.log('✅ Generated: methods.html')
+  return true
+}
+
 // Generate static post files
 async function generateStaticPosts() {
   console.log('Fetching posts from Supabase...')
@@ -395,11 +512,14 @@ async function generateStaticPosts() {
   // Generate predictions page
   const hasPredictions = await generatePredictionsPage()
   
+  // Generate methods page
+  const hasMethods = await generateMethodsPage()
+  
   // Generate index.html with posts included for SEO
   generateIndexHtml(featuredPosts, regularPosts)
   
-  // Generate sitemap.xml with all posts and predictions
-  generateSitemap(posts, hasPredictions)
+  // Generate sitemap.xml with all posts, predictions, and methods
+  generateSitemap(posts, hasPredictions, hasMethods)
   
   // Create posts directory if it doesn't exist
   if (!fs.existsSync('posts')) {
