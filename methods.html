@@ -57,7 +57,7 @@ Both the algorithmic and human results include near-decision information, such a
 
 Model performance is validated against a hold-out term, OT2024. This is the term that wrapped up in June 2025. Performance on this test term will provide a useful assessment of how the model will perform on the current term. (Note that for the current term predictions, I roll training forward to include data from last term.)
 
-The results for OT2024 are reported in the table below. The model’s vote-level accuracy is 74 percent, and its case-level accuracy is also 81 percent. Vote-level accuracy higher than algorithmic SOTA but lower than human crowds. The model outperforms algorithmic SOTA and humans at the case level. 
+The results for OT2024 are reported in the tables below. The model’s vote-level accuracy is 74 percent, and its case-level accuracy is 81 percent. Vote-level accuracy higher than algorithmic SOTA but lower than human crowds. The model outperforms algorithmic SOTA and humans at the case level. 
 
 It is common to assess performance using the F1 score, along with recall and precision. Recall is the proportion of positive instances correctly identified; and precision tells us the proportion of cases the model marks as true are in fact true. Together, they give a measure of false positives and negatives, and the F1 score is the (harmonic) average of the two.
 
@@ -104,7 +104,7 @@ The model performs well relative to benchmarks on OT2024. However, this is a dif
 <li>Generalizability. Even without drift, it is possible that OT2024 is unrepresentative of the Court’s behavior in the current term. The Court’s behavior may be more similar to OT2023 or OT2019.</li>
 <li>Data quality and availability. The model’s performance depends on the quality and completeness of the underlying data sources (party filings, lower court decisions, oral arguments, amicus briefs). Missing or incomplete data could significantly impact predictions.</li>
 <li>External factors. The model may not adequately capture external factors that influence Court decisions, such as public opinion, political pressure, or broader social and economic contexts.</li>
-<li>Explainability. The models used contain tens or hundreds of billions of parameters and it is therefore difficult to interpret. Part of this research exercise is to pair the model predictions with close readings of the underlying material.</li>
+<li>Explainability. The models used contain tens or hundreds of billions of parameters and it is therefore difficult to interpret or explain model outputs. Part of this research exercise is to pair the model predictions with close readings of the underlying material.</li>
 </ul></div>
             </article>
         </main>
