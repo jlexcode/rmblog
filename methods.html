@@ -71,7 +71,7 @@ Figure 1 bins the predicted probabilities from the model for reversal and shows 
 
 <figure class="my-2"><img src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1760996355523-epc6d8.png" alt="Figure 1: vote level calibration" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">Figure 1: vote level calibration</figcaption></figure>
 
-The expected calibration error (ECE), or departure from the line of perfect correspondence, is 0.06—the average prediction is about four percentage points off target. We can also look at the Brier score, which is the mean square of the difference of the label and the predicted probability. Lower is better. The model’s Brier score is 0.18. That can be used later to compare to other models.
+The expected calibration error (ECE), or departure from the line of perfect correspondence, is 0.06—the average prediction is about six percentage points off target. We can also look at the Brier score, which is the mean square of the difference of the label and the predicted probability. Lower is better. The model’s Brier score is 0.18. That can be used later to compare to other models.
 
 Unlike other models, including human models, this model performs better at the case level than the vote level. Consider Table 2, which reports model performance by class at the case level. All relevant measures stronger at the case level than at the vote level. The weighted F1 score is an impressive 0.81; unweighted is now 0.75. On calibration, the ECE (0.15) is higher, however, and the Brier score remains about the same (0.16). This suggests that, even as classification metrics improve at the case level, calibration may suffer somewhat. 
 
