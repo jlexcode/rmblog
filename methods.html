@@ -41,7 +41,7 @@
             <article class="prose prose-lg max-w-none">
                 <div class="whitespace-pre-wrap"><h2>Introduction</h2>
 
-A primary focus of this research log is to experiment with legal forecasting using recent transformer-based models. This page documents the methodology and validation of the model. This page may update with improvements in the model. (I use “model” permissively to include the pipeline from raw data to inference and ensembling.)
+A primary focus of this research log is to experiment with legal forecasting using recent transformer-based models. This page documents the methodology and validation of the model. This page may update with improvements in the model. (I use “model” permissively to include the pipeline from raw data to inference and ensembling.) The current model is called experience-2, in a nod to Holmes.
 
 <h2>Basic Approach</h2>
 
@@ -49,7 +49,7 @@ The objective of the model development is to learn the justices’ personalities
 
 <h2>Benchmark Performance</h2>
 
-It is notoriously difficult to predict Supreme Court votes. The leading algorithmic approaches produce vote-level predictions with about 70 percent accuracy. Wisdom of human crowds tends to be higher—about 80 percent accuracy. But case-level predictions tend to be lower. For example, last term (OT2024) the human crowds predicted vote outcomes with an accuracy of 80.6 percent, but case-level outcomes with an accuracy of only 76.3 percent.
+It is notoriously difficult to predict Supreme Court votes. The leading algorithmic approaches produce vote-level predictions with about <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0174698&trk=public_post_comment-text" target="_blank" rel="noopener noreferrer">70 percent accuracy</a>. Wisdom of human crowds tends to be higher—about 80 percent accuracy. But case-level predictions tend to be lower. For example, last term (OT2024) the <a href="https://reason.com/volokh/2025/07/16/congratulations-to-kirill-muzyka-chief-justice-of-fantasyscotus-for-ot-2024/?nab=1" target="_blank" rel="noopener noreferrer">human crowds</a> predicted vote outcomes with an accuracy of 80.6 percent, but case-level outcomes with an accuracy of only 76.3 percent.
 
 Both the algorithmic and human results include near-decision information, such as oral argument data, amicus briefs, etc. The main model I develop uses most near-decision information, too. However, I only use features available up to the day of oral argument. This means that I exclude information that others include, perhaps most notably the timing of the decision itself. For my prediction objectives, I view that information as a kind of leakage—the timing of the decision may be endogenous to characteristics we are trying to model (e.g., politically charged cases may be decided later in the term).
 
