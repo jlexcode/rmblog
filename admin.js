@@ -114,7 +114,11 @@ class AdminPanel {
             insertLinkModalBtn.addEventListener('click', () => this.insertLinkFromModal());
         }
 
-
+        // CSV table insertion button
+        const insertCsvTableBtn = document.getElementById('insert-csv-table-btn');
+        if (insertCsvTableBtn) {
+            insertCsvTableBtn.addEventListener('click', () => this.insertTableIntoPost());
+        }
 
     }
 
