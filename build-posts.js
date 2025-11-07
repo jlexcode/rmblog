@@ -423,6 +423,11 @@ const methodsTemplate = (methods) => `
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+    <style>
+        .post-link {
+            color: #3b82f6; /* same blue as about page */
+        }
+    </style>
 </head>
 <body class="bg-white text-black font-sans">
     <div class="max-w-2xl mx-auto px-4 py-8">
@@ -434,7 +439,22 @@ const methodsTemplate = (methods) => `
 
         <main class="space-y-6">
             <article class="prose prose-lg max-w-none">
-                <div class="whitespace-pre-wrap">${methods.content}</div>
+                <div class="text-black leading-relaxed font-['Inter'] whitespace-pre-wrap">${methods.content
+                    // Style tables (only if they don't already have classes)
+                    .replace(/<table(?!\s+class)/g, '<table class="w-full border-collapse border border-gray-300"')
+                    .replace(/<th(?!\s+class)/g, '<th class="border border-gray-300 px-3 py-2 text-left font-[\'Space_Mono\'] font-medium"')
+                    .replace(/<td(?!\s+class)/g, '<td class="border border-gray-300 px-3 py-2 font-[\'Inter\']"')
+                    .replace(/<tr(?!\s+class)/g, '<tr class="hover:bg-gray-50"')
+                    // Style images (only if they don't already have classes)
+                    .replace(/<img(?!\s+class)/g, '<img class="w-full rounded-lg shadow-sm"')
+                    // Style links
+                    .replace(/<a\s+([^>]*?)>/g, (match, attributes) => {
+                        if (attributes.includes('class=')) {
+                            return match.replace(/class="([^"]*?)"/, 'class="$1 post-link"')
+                        } else {
+                            return `<a ${attributes} class="post-link">`
+                        }
+                    })}</div>
             </article>
         </main>
     </div>
