@@ -46,7 +46,7 @@
             <article class="prose prose-lg max-w-none">
                 <div class="text-black leading-relaxed font-['Inter'] whitespace-pre-wrap"><h2>Introduction</h2>
 
-A primary focus of this research log is to experiment with legal forecasting using recent transformer-based models. This page documents the methodology and validation of the model. This page may update with improvements in the model. (I use “model” permissively to include the pipeline from raw data to inference and ensembling.) The current model is called experience-4, in a nod to Holmes. Experience-4 is a revision over experience-3, designed to stabilize predictions, improve calibration, and generate estimates of uncertainty; classification performance is slightly improved. (Updated 11-7-25.)
+A primary focus of this research log is to experiment with legal forecasting using recent transformer-based models. This page documents the methodology and validation of the model. This page may update with improvements in the model. (I use “model” permissively to include the pipeline from raw data to inference and ensembling.) The current model is called experience-5, in a nod to Holmes. Experience-5 is a modest revision over experience-4, designed to improve vote aggregation and estimates of uncertainty; classification performance is approximately unchanged and not updated. (Updated 11-17-25.)
 
 <h2>Basic Approach</h2>
 
@@ -120,7 +120,7 @@ Uncertainty over votes (and case outcomes) can be viewed in different ways. If a
 
 The former type of uncertainty is easy enough to process and calculate—intuitively, we know that outcomes are more uncertain with a fair coin than with a weighted coin. The latter form of uncertainty is more difficult—it requires us to assess our confidence in the predictions themselves. How sure are we that this is a weighted coin?
 
-The model training process itself reveals how certain the model is of its outputs—more certain predictions vary less in output—and that can be used as a principled measure uncertainty. (I will post more details about that some time.) And this measure of uncertainty can be adjusted to match quantities we might care about. I adjust uncertainty so that we cover 90 percent of true votes with the uncertainty bands (using a rule of a reversal vote if the probability of a reversal vote is greater than 50 percent). In other words, for example, if the lower bound of the band is above 50 percent, there should be a 90 percent chance the vote is to reverse. That tends to roughly propagate to case-level bands.
+The model training process itself reveals how certain the model is of its outputs—more certain predictions vary less in output—and that can be used as a principled measure uncertainty. (I will post more details about that some time.) And this measure of uncertainty can be adjusted to match quantities we might care about. I adjust uncertainty so that we cover 90 percent of true votes and case outcomes with the uncertainty bands (using a rule of a reversal vote/outcome if the probability of a reversal vote/outcome is greater than 50 percent). In other words, for example, if the lower bound of the band is above 50 percent, there should be a 90 percent chance the vote/outcome is to reverse. 
 
 <h2>Limitations</h2>
 
