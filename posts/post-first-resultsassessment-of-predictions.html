@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Results—Assessment of Predictions - Reasonable Machines</title>
+    <meta name="description" content="The Court released decisions in three cases today, in addition to one from earlier in January. Time to perform an initial assessment of the model’s predictions in this live experiment....">
+    <meta name="keywords" content="law, AI, organizations, legal technology, social science, research">
+    <meta name="author" content="Jed Stiglitz">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://reasonablemachines.io/post-first-resultsassessment-of-predictions.html">
+    <meta property="og:title" content="First Results—Assessment of Predictions - Reasonable Machines">
+    <meta property="og:description" content="The Court released decisions in three cases today, in addition to one from earlier in January. Time to perform an initial assessment of the model’s predictions in this live experiment....">
+    <meta property="og:site_name" content="Reasonable Machines">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reasonablemachines.io/post-first-resultsassessment-of-predictions.html">
+    <meta property="twitter:title" content="First Results—Assessment of Predictions - Reasonable Machines">
+    <meta property="twitter:description" content="The Court released decisions in three cases today, in addition to one from earlier in January. Time to perform an initial assessment of the model’s predictions in this live experiment....">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/post-first-resultsassessment-of-predictions.html">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .post-link {
+            color: #3b82f6; /* same blue as about page */
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        
+        <!-- Post content -->
+        <div id="post-content">
+            <header class="mb-8">
+                <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">First Results—Assessment of Predictions</h1>
+                <div class="text-black mb-6 font-['Space_Mono']">January 14, 2026 • jed</div>
+            </header>
+            
+            <article class="prose prose-lg max-w-none">
+                <div class="text-black leading-relaxed font-['Inter'] whitespace-pre-wrap">The Court released decisions in three cases today, in addition to one from earlier in January. Time to perform an initial assessment of the model’s predictions in this live experiment. 
+
+Overall, the model performed quite well: it correctly predicted the outcome in all four cases. The vote-level accuracy was 67 percent (69 percent if you count Barrett’s <u>Bowe</u> vote differently). It’s a small sample, so time will tell, but that’s better than expected at the case level and slightly worse than expected at the vote level.
+
+Also notable, of the eight incorrectly predicted votes, the model acknowledged six as sufficiently uncertain that they could have gone the other way. Estimates of uncertainty were designed to capture the correct result 90 percent of the time. So far, 8 percent (3/36) of estimates failed that test—i.e., they were confident errors. So again, in line with expected parameters based on validation runs.
+
+<a href="https://reasonablemachines.io/posts/post-docket-report-bowe-v-us" target="_blank" rel="noopener noreferrer" class="post-link">Bowe v. United States</a>. (Repeat habeas claims.) The Court reversed/remanded 5-4, with dissenting votes by Gorsuch, Thomas, Alito, and Barrett (in part). The model predicted the Court would reverse 7-2, with dissents by Alito and Roberts. The Roberts dissent was estimated to be uncertain, as were the predicted reverse votes by Thomas and Barrett. 
+
+
+<figure class="my-2"><img class="w-full rounded-lg shadow-sm" src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1768410655016-d5ex1h.png" alt="experience-5 predictions" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">Bowe experience-5 predictions</figcaption></figure>
+
+
+<a href="https://reasonablemachines.io/posts/post-docket-report-barrett-v-us" target="_blank" rel="noopener noreferrer" class="post-link">Barrett v. United States</a>. (Double jeopardy.) The Court reversed, 9-0, with a concurring opinion by Gorsuch. The model predicted the Court would reverse 7-2, with dissents by Alito and Kavanaugh. 
+
+<figure class="my-2"><img class="w-full rounded-lg shadow-sm" src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1768409635826-vibbho.png" alt="Barrett experience-5 predictions" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">Barrett experience-5 predictions</figcaption></figure>
+
+<a href="https://reasonablemachines.io/posts/post-docket-report-case-v-montana" target="_blank" rel="noopener noreferrer" class="post-link">Case v. Montana</a>. (Emergency aid entry without a warrant.) The Court affirmed 9-0, with concurring opinions by Sotomayor and Gorsuch. The model predicted the Court would affirm 5-4. Three of the predicted dissents, however, were uncertain (Kagan, Barrett, Jackson). 
+
+<figure class="my-2"><img class="w-full rounded-lg shadow-sm" src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1768409715230-vrfx2v.png" alt="Case v. Montana experience-5 predictions" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">Case v. Montana experience-5 predictions</figcaption></figure>
+
+<a href="https://reasonablemachines.io/posts/post-docket-report-bost-v-illinois-state-board-of-elections" target="_blank" rel="noopener noreferrer" class="post-link">Bost v. Illinois State Board of Elections</a>. (Federal candidates' standing to challenge state election laws.) The Court reversed 7-2, with Jackson and Sotomayor dissenting. The model predicted the Court would reverse 5-4, with dissents by Sotomayor, Jackson, Thomas, and Barrett (the latter two of which were uncertain). 
+
+<figure class="my-2"><img class="w-full rounded-lg shadow-sm" src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1768409777546-ua3r49.png" alt="Bost experience-5 predictions" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">Bost experience-5 predictions</figcaption></figure></div>
+            </article>
+        </div>
+    </div>
+
+    <script src="../header.js"></script>
+    
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+        
+        // Track post view
+        posthog.capture('post_viewed', {
+            post_title: 'First Results—Assessment of Predictions',
+            post_slug: 'first-resultsassessment-of-predictions',
+            post_id: '42',
+            post_featured: true,
+            post_date: '2026-01-14T17:26:48.433+00:00'
+        })
+    </script>
+</body>
+</html>
