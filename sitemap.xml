@@ -31,6 +31,18 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-montgomery-v-caribe-transport-ii.html</loc>
+        <lastmod>2026-04-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://reasonablemachines.io/posts/post-docket-report-watson-v-republican-national-committee.html</loc>
+        <lastmod>2026-04-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
         <loc>https://reasonablemachines.io/posts/post-docket-report-hunter-v-united-states.html</loc>
         <lastmod>2026-04-10</lastmod>
         <changefreq>monthly</changefreq>
