@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT25 Error Analysis - Reasonable Machines</title>
+    <meta name="description" content="Though the model performed well in OT25 it was not as strong as in the validation period. This is largely because the term skewed towards affirm relative to previous terms....">
+    <meta name="keywords" content="law, AI, organizations, legal technology, social science, research">
+    <meta name="author" content="Jed Stiglitz">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://reasonablemachines.io/post-ot25-error-analysis.html">
+    <meta property="og:title" content="OT25 Error Analysis - Reasonable Machines">
+    <meta property="og:description" content="Though the model performed well in OT25 it was not as strong as in the validation period. This is largely because the term skewed towards affirm relative to previous terms....">
+    <meta property="og:site_name" content="Reasonable Machines">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reasonablemachines.io/post-ot25-error-analysis.html">
+    <meta property="twitter:title" content="OT25 Error Analysis - Reasonable Machines">
+    <meta property="twitter:description" content="Though the model performed well in OT25 it was not as strong as in the validation period. This is largely because the term skewed towards affirm relative to previous terms....">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/post-ot25-error-analysis.html">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        .post-link {
+            color: #3b82f6; /* same blue as about page */
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        
+        <!-- Post content -->
+        <div id="post-content">
+            <header class="mb-8">
+                <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">OT25 Error Analysis</h1>
+                <div class="text-black mb-6 font-['Space_Mono']">August 17, 2026 • jed</div>
+            </header>
+            
+            <article class="prose prose-lg max-w-none">
+                <div class="text-black leading-relaxed font-['Inter'] whitespace-pre-wrap">Though the model performed well in OT25 it was not as strong as in the validation period. This is largely because the term skewed towards affirm relative to previous terms. Overall, the justices voted to reverse about 58 percent of the time; in the previous term, they voted to reverse more like two-thirds of the time. Case level outcomes similarly were relatively skewed to affirm relative to baselines.
+
+	This had two effects. The less important was a thresholding problem. The ideal probability threshold to separate reverse from affirm votes was not 0.5, but instead somewhat higher. The more important problem was that, general, the model has trouble detecting affirm votes. This was evident in the validation term, where the F1 score for the affirm class was markedly lower than for the reverse class. Last term, by leaning into affirm votes, the Court’s behavior went directly into the weaker part of the model’s ability, its relative blind spot. On a term with a normal affirm-reverse split, the model would likely have performed more like the validation term.
+
+	At the justice level, where did the model succeed and where did it fail? As shown in the figure, the model seems to have done best at the ideological extremes: its accuracies for Justices Sotomayor, Thomas, Gorsuch, and Jackson were on the order of 80 percent or higher. Justice Alito was just behind. By comparison, the model had the most trouble with those justices conventionally thought of as swing votes: Barrett, Kavanaugh, Roberts, and Kagan. Accuracies for those justices were on the order of 65 percent. Naturally, the cells become small once we look at the justice level, so the usual caveats apply.
+
+
+<figure class="my-2"><img class="w-full rounded-lg shadow-sm" src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1786998975979-ch3m0r.png" alt="justice level accuracy" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">justice level accuracy</figcaption></figure>
+
+
+	So where does this leave us? Mainly, needing a better model of affirm votes. As luck would have it, I substantially revised the model for the upcoming term and believe I (largely) fixed the issue. More soon on that.</div>
+            </article>
+        </div>
+    </div>
+
+    <script src="../header.js"></script>
+    
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+        
+        // Track post view
+        posthog.capture('post_viewed', {
+            post_title: 'OT25 Error Analysis',
+            post_slug: 'ot25-error-analysis',
+            post_id: '75',
+            post_featured: false,
+            post_date: '2026-08-17T20:36:27.214+00:00'
+        })
+    </script>
+</body>
+</html>
