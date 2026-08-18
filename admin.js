@@ -4,8 +4,10 @@ class AdminPanel {
         this.currentTableData = null;
         this.uploadedImages = [];
         this.editingPostId = null; // Track if we're editing an existing post
+        this.postTypeTouched = false; // Stop auto-suggesting post type once the user picks one
         this.setupEventListeners();
         this.setupDragAndDrop();
+        this.setDefaultTerm();
     }
 
     setupEventListeners() {
@@ -31,7 +33,18 @@ class AdminPanel {
         // Auto-generate slug from title
         const titleInput = document.getElementById('post-title');
         if (titleInput) {
-            titleInput.addEventListener('input', () => this.generateSlug());
+            titleInput.addEventListener('input', () => {
+                this.generateSlug();
+                this.suggestPostType();
+            });
+        }
+
+        // Post type selector: manual choice wins over title-based suggestion
+        const postTypeSelect = document.getElementById('post-type');
+        if (postTypeSelect) {
+            postTypeSelect.addEventListener('change', () => {
+                this.postTypeTouched = true;
+            });
         }
 
         // Auto-generate excerpt from content
@@ -50,6 +63,16 @@ class AdminPanel {
         const loadCurrentPredictionsBtn = document.getElementById('load-current-predictions-btn');
         if (loadCurrentPredictionsBtn) {
             loadCurrentPredictionsBtn.addEventListener('click', () => this.loadCurrentPredictions());
+        }
+
+        // Prediction snapshot buttons
+        const addSnapshotBtn = document.getElementById('add-snapshot-btn');
+        if (addSnapshotBtn) {
+            addSnapshotBtn.addEventListener('click', () => this.addPredictionSnapshot());
+        }
+        const loadSnapshotsBtn = document.getElementById('load-snapshots-btn');
+        if (loadSnapshotsBtn) {
+            loadSnapshotsBtn.addEventListener('click', () => this.loadSnapshotsList());
         }
 
         // Load current methods button
@@ -583,6 +606,39 @@ class AdminPanel {
         }
     }
 
+    // Sep 1 of year N through Aug 31 of year N+1 → OT(N). Mirrors termOf() in build-posts.js.
+    termFromDate(d) {
+        return d.getMonth() >= 8 ? d.getFullYear() : d.getFullYear() - 1;
+    }
+
+    setDefaultTerm() {
+        const termInput = document.getElementById('post-term');
+        if (termInput) {
+            termInput.value = this.termFromDate(new Date());
+        }
+        this.setSnapshotDefaults();
+    }
+
+    setSnapshotDefaults() {
+        const snapshotTerm = document.getElementById('snapshot-term');
+        if (snapshotTerm) {
+            snapshotTerm.value = this.termFromDate(new Date());
+        }
+        const snapshotDate = document.getElementById('snapshot-date');
+        if (snapshotDate) {
+            snapshotDate.value = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD, local timezone
+        }
+    }
+
+    suggestPostType() {
+        if (this.postTypeTouched) return;
+        const title = document.getElementById('post-title').value;
+        const select = document.getElementById('post-type');
+        if (select) {
+            select.value = /^docket\s+report\b/i.test(title) ? 'docket' : 'essay';
+        }
+    }
+
     generateExcerpt() {
         const content = this.getContent();
         const excerptInput = document.getElementById('post-excerpt');
@@ -614,12 +670,12 @@ class AdminPanel {
             // Render HTML directly with proper styling
             preview.innerHTML = content
                 // Style tables (only if they don't already have classes)
-                .replace(/<table(?!\s+class)/g, '<table class="w-full border-collapse border border-gray-300"')
-                .replace(/<th(?!\s+class)/g, '<th class="border border-gray-300 px-3 py-2 text-left font-[\'Space_Mono\'] font-medium"')
-                .replace(/<td(?!\s+class)/g, '<td class="border border-gray-300 px-3 py-2 font-[\'Inter\']"')
-                .replace(/<tr(?!\s+class)/g, '<tr class="hover:bg-gray-50"')
+                .replace(/<table(?![a-zA-Z])(?!\s+class)/g, '<table class="w-full border-collapse border border-gray-300"')
+                .replace(/<th(?![a-zA-Z])(?!\s+class)/g, '<th class="border border-gray-300 px-3 py-2 text-left font-[\'Space_Mono\'] font-medium"')
+                .replace(/<td(?![a-zA-Z])(?!\s+class)/g, '<td class="border border-gray-300 px-3 py-2 font-[\'Inter\']"')
+                .replace(/<tr(?![a-zA-Z])(?!\s+class)/g, '<tr class="hover:bg-gray-50"')
                 // Style images (only if they don't already have classes)
-                .replace(/<img(?!\s+class)/g, '<img class="w-full rounded-lg shadow-sm"')
+                .replace(/<img(?![a-zA-Z])(?!\s+class)/g, '<img class="w-full rounded-lg shadow-sm"')
                 // Style links
                 .replace(/<a\s+([^>]*?)>/g, (match, attributes) => {
                     if (attributes.includes('class=')) {
@@ -710,6 +766,156 @@ class AdminPanel {
             month: 'short', 
             day: 'numeric' 
         });
+    }
+
+    async addPredictionSnapshot() {
+        const term = parseInt(document.getElementById('snapshot-term').value, 10);
+        const snapshotDate = document.getElementById('snapshot-date').value;
+        const model = document.getElementById('snapshot-model').value.trim();
+        const note = document.getElementById('snapshot-note').value.trim();
+        const fileInput = document.getElementById('snapshot-image');
+        const file = fileInput.files[0];
+
+        if (!Number.isFinite(term) || !snapshotDate || !file) {
+            window.adminAuth.showStatus('Please fill in term, date, and chart image', 'error');
+            return;
+        }
+
+        const user = window.adminAuth.getCurrentUser();
+        if (!user) {
+            window.adminAuth.showStatus('Please log in to add snapshots', 'error');
+            return;
+        }
+
+        try {
+            window.adminAuth.showStatus('Uploading snapshot chart...', 'info');
+
+            // Storage upload must succeed — never fall back to embedding base64
+            const imageUrl = await this.uploadImageToSupabase(file);
+
+            const SUPABASE_URL = 'https://xlglobsjkfpfpkxlivki.supabase.co'
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZ2xvYnNqa2ZwZnBreGxpdmtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTg2NDYsImV4cCI6MjA3MjMzNDY0Nn0.6_zXfDYP8C23FBJZTGKz2ecK74-md4-t9ellPENGWCc'
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const { error } = await supabaseClient
+                .from('prediction_snapshots')
+                .insert([{
+                    term,
+                    snapshot_date: snapshotDate,
+                    model: model || null,
+                    note: note || null,
+                    image_url: imageUrl
+                }]);
+
+            if (error) throw error;
+
+            document.getElementById('snapshot-model').value = '';
+            document.getElementById('snapshot-note').value = '';
+            fileInput.value = '';
+            this.setSnapshotDefaults();
+
+            window.adminAuth.showStatus('Snapshot added! Rebuild/deploy to publish.', 'success');
+            this.loadSnapshotsList();
+
+        } catch (error) {
+            console.error('Error adding snapshot:', error);
+            window.adminAuth.showStatus(`Error adding snapshot: ${error.message}`, 'error');
+        }
+    }
+
+    async loadSnapshotsList() {
+        try {
+            window.adminAuth.showStatus('Loading snapshots...', 'info');
+
+            const SUPABASE_URL = 'https://xlglobsjkfpfpkxlivki.supabase.co'
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZ2xvYnNqa2ZwZnBreGxpdmtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTg2NDYsImV4cCI6MjA3MjMzNDY0Nn0.6_zXfDYP8C23FBJZTGKz2ecK74-md4-t9ellPENGWCc'
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const { data, error } = await supabaseClient
+                .from('prediction_snapshots')
+                .select('*')
+                .order('snapshot_date', { ascending: false })
+                .order('id', { ascending: false });
+
+            if (error) throw error;
+
+            this.displaySnapshotsList(data || []);
+            document.getElementById('snapshots-list').classList.remove('hidden');
+            window.adminAuth.showStatus(`Loaded ${(data || []).length} snapshots`, 'success');
+
+        } catch (error) {
+            console.error('Error loading snapshots:', error);
+            window.adminAuth.showStatus(`Error loading snapshots: ${error.message}`, 'error');
+        }
+    }
+
+    displaySnapshotsList(snapshots) {
+        const snapshotsTable = document.getElementById('snapshots-table');
+
+        if (snapshots.length === 0) {
+            snapshotsTable.innerHTML = '<p class="text-center py-4 font-[\'Inter\']">No snapshots found</p>';
+            return;
+        }
+
+        snapshotsTable.innerHTML = `
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Date</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Term</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Model</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Chart</th>
+                        <th class="border border-gray-300 px-3 py-2 text-left font-['Space_Mono'] font-medium">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${snapshots.map(s => `
+                        <tr class="hover:bg-gray-50">
+                            <td class="border border-gray-300 px-3 py-2 font-['Inter'] text-sm">${s.snapshot_date}</td>
+                            <td class="border border-gray-300 px-3 py-2 font-['Inter'] text-sm">OT${String(s.term).slice(2)}</td>
+                            <td class="border border-gray-300 px-3 py-2 font-['Inter'] text-sm">${s.model || ''}</td>
+                            <td class="border border-gray-300 px-3 py-2 font-['Inter'] text-sm">
+                                <a href="${s.image_url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">view</a>
+                            </td>
+                            <td class="border border-gray-300 px-3 py-2">
+                                <button onclick="window.adminPanel.deleteSnapshot('${s.id}', '${s.snapshot_date}')"
+                                        class="bg-red-600 text-white px-2 py-1 rounded text-xs font-['Space_Mono'] hover:bg-red-700">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    async deleteSnapshot(snapshotId, snapshotDate) {
+        if (!confirm(`Delete the ${snapshotDate} snapshot? This cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            window.adminAuth.showStatus('Deleting snapshot...', 'info');
+
+            const SUPABASE_URL = 'https://xlglobsjkfpfpkxlivki.supabase.co'
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZ2xvYnNqa2ZwZnBreGxpdmtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NTg2NDYsImV4cCI6MjA3MjMzNDY0Nn0.6_zXfDYP8C23FBJZTGKz2ecK74-md4-t9ellPENGWCc'
+            const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            const { error } = await supabaseClient
+                .from('prediction_snapshots')
+                .delete()
+                .eq('id', snapshotId);
+
+            if (error) throw error;
+
+            window.adminAuth.showStatus('Snapshot deleted', 'success');
+            this.loadSnapshotsList();
+
+        } catch (error) {
+            console.error('Error deleting snapshot:', error);
+            window.adminAuth.showStatus(`Error deleting snapshot: ${error.message}`, 'error');
+        }
     }
 
     async loadCurrentPredictions() {
@@ -816,7 +1022,17 @@ class AdminPanel {
             document.getElementById('post-excerpt').value = data.excerpt || '';
             this.setContent(data.content || '');
             document.getElementById('post-featured').checked = data.featured || false;
-            
+            const postTypeSelect = document.getElementById('post-type');
+            if (postTypeSelect) {
+                postTypeSelect.value = data.post_type
+                    || (/^docket\s+report\b/i.test(data.title || '') || (data.slug || '').startsWith('docket-report') ? 'docket' : 'essay');
+                this.postTypeTouched = true; // don't second-guess an existing post's type on title edits
+            }
+            const termInput = document.getElementById('post-term');
+            if (termInput) {
+                termInput.value = data.term != null ? data.term : this.termFromDate(new Date(data.created_at));
+            }
+
             // Set editing mode
             this.editingPostId = postId;
             document.getElementById('form-title').textContent = 'Edit Post';
@@ -870,6 +1086,10 @@ class AdminPanel {
         this.setContent('');
         document.getElementById('post-featured').checked = false;
         document.getElementById('save-as-predictions').checked = false; // Reset to default (post)
+        const postTypeSelect = document.getElementById('post-type');
+        if (postTypeSelect) postTypeSelect.value = 'essay';
+        this.postTypeTouched = false;
+        this.setDefaultTerm();
         this.editingPostId = null;
         document.getElementById('form-title').textContent = 'Create New Post';
         
@@ -883,6 +1103,9 @@ class AdminPanel {
         const excerpt = document.getElementById('post-excerpt').value.trim();
         const content = this.getContent().trim();
         const featured = document.getElementById('post-featured').checked;
+        const post_type = document.getElementById('post-type').value;
+        const termValue = parseInt(document.getElementById('post-term').value, 10);
+        const term = Number.isFinite(termValue) ? termValue : null; // null → build derives from date
         const saveAsPredictions = document.getElementById('save-as-predictions').checked;
         const saveAsMethods = document.getElementById('save-as-methods').checked;
 
@@ -935,12 +1158,14 @@ class AdminPanel {
                     // Update existing post
                     const result = await supabaseClient
                         .from('posts')
-                        .update({ 
-                            title, 
-                            slug, 
-                            excerpt, 
+                        .update({
+                            title,
+                            slug,
+                            excerpt,
                             content,
-                            featured
+                            featured,
+                            post_type,
+                            term
                         })
                         .eq('id', this.editingPostId);
                     
@@ -950,12 +1175,14 @@ class AdminPanel {
                     // Create new post
                     const result = await supabaseClient
                         .from('posts')
-                        .insert([{ 
-                            title, 
-                            slug, 
-                            excerpt, 
+                        .insert([{
+                            title,
+                            slug,
+                            excerpt,
                             content,
                             featured,
+                            post_type,
+                            term,
                             created_at: new Date().toISOString()
                         }]);
                     

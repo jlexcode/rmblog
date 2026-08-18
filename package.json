@@ -4,14 +4,15 @@
   "description": "A minimal research log built with HTML, Tailwind, and Supabase",
   "main": "index.html",
   "scripts": {
-    "build": "node build-posts.js",
-    "dev": "python3 -m http.server 8000",
-    "sitemap": "node update-sitemap.js"
+    "build": "node build-posts.js && npx tailwindcss -i tailwind.in.css -o tailwind.css --minify",
+    "dev": "python3 -m http.server 8000"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
   "keywords": ["research log", "supabase", "tailwind"],
   "author": "Jed Stiglitz",
   "license": "MIT"
