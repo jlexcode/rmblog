@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whither good cause - Reasonable Machines</title>
+    <meta name="description" content="Ordinarily, an agency must give notice and take comments before it issues a final rule—hence, the name for the typical procedure, notice and comment. The Administrative Procedure Act (APA), however,...">
+    <meta name="keywords" content="law, AI, organizations, legal technology, social science, research">
+    <meta name="author" content="Jed Stiglitz">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://reasonablemachines.io/posts/post-whither-good-cause.html">
+    <meta property="og:title" content="Whither good cause - Reasonable Machines">
+    <meta property="og:description" content="Ordinarily, an agency must give notice and take comments before it issues a final rule—hence, the name for the typical procedure, notice and comment. The Administrative Procedure Act (APA), however,...">
+    <meta property="og:site_name" content="Reasonable Machines">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://reasonablemachines.io/posts/post-whither-good-cause.html">
+    <meta property="twitter:title" content="Whither good cause - Reasonable Machines">
+    <meta property="twitter:description" content="Ordinarily, an agency must give notice and take comments before it issues a final rule—hence, the name for the typical procedure, notice and comment. The Administrative Procedure Act (APA), however,...">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://reasonablemachines.io/posts/post-whither-good-cause.html">
+
+    <link href="/tailwind.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/styles.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black font-sans">
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <div id="header"></div>
+        <!-- Post content -->
+        <div id="post-content">
+            <header class="mb-8">
+                <h1 class="text-3xl font-normal text-black mb-3 font-['Space_Mono']">Whither good cause</h1>
+                <div class="text-gray-500 mb-6 font-['Space_Mono']">September 28, 2026 • jed</div>
+            </header>
+
+            <article class="prose prose-lg max-w-none">
+                <div class="text-black leading-relaxed font-['Inter'] whitespace-pre-wrap">Ordinarily, an agency must give notice and take comments before it issues a final rule—hence, the name for the typical procedure, notice and comment. The Administrative Procedure Act (APA), however, embeds numerous exceptions to the notice requirement, including the good cause exception. None of the exceptions is especially clear, but the <a href="https://www.law.cornell.edu/uscode/text/5/553" target="_blank" rel="noopener noreferrer" class="post-link">good cause exception</a> may be in its own league—it allows the agency to skip notice and comment when those procedures are “impracticable, unnecessary, or contrary to the public interest.” The basic idea is that agencies should be able to use the exception in cases of emergencies, minor technical corrections, or when Congress imposes a deadline they cannot meet.
+
+	Numerous studies show that this exception is heavily used by agencies, accounting for the bulk of the instances in which they skip notice and comment (<a href="https://www.congress.gov/crs-product/R44356" target="_blank" rel="noopener noreferrer" class="post-link">GAO</a>). This despite the <a href="https://scholar.google.com/scholar_case?case=5798753705695407736&q=%22narrowly+construed+and+only+reluctantly+countenanced%22&hl=en&as_sdt=6,33" target="_blank" rel="noopener noreferrer" class="post-link">DC Circuit’s view</a> that the notice exceptions should be “narrowly construed and only reluctantly countenanced.” President Trump sharpened long-standing concern over good cause by issuing a <a href="https://www.whitehouse.gov/presidential-actions/2025/04/directing-the-repeal-of-unlawful-regulations/" target="_blank" rel="noopener noreferrer" class="post-link">memorandum</a> early in his second term, directing agencies to use the good cause exception to repeal “unlawful” regulations. Under the controversial memorandum, any time the agency thought an earlier regulation was unlawful—in light of Loper Bright, or West Virginia v. EPA—they might simply discard it without fanfare through the good cause exception. 
+
+	A simple first order question on this topic is whether the use of the good cause exception is, in fact, increasing during the Trump Administration. This can be answered in a few ways, but I think the most informative approach is to focus on more “substantive” rules for which we believe the good cause ought not normally apply, and then to ask whether the raw frequency or share is increasing or decreasing over time. (Many rules, and most uses of the good cause exception, apply to very minor rules. Of the roughly 25k good cause exceptions in these data, about 15k come from these smaller rules.) 
+
+	Starting with the xmls for all final rules issued since 2000, I use regular expressions to search for whether the rule refers to the good cause exception, or one of its components, such as impracticability. This results in about 42,000 rules, out of a total of 95,000. I then pass a language model over the 42,000 candidate rules to verify whether they invoke the good cause exception, and if so the rationale; this pass also separates out 553(b) good cause (skipping notice), our focus, from 553(d) good cause (skipping 30-day delay). A re-assessment of 300 random rules with high thinking level validated the passes (agreement 97%; kappa = 0.93). Finally, I exclude small rules (local Coast Guard safety zones, fishery actions, FAA airworthiness directives, corrections and editorial changes, temporary rules), for which it is quite plausible that good cause is appropriately applied. The resulting dataset allows insight into the invocation of the good cause exception over time.
+
+	So the results? 
+
+	Let’s first focus on the shares. The share of substantive rules in which agencies invoke the good cause exception runs between about 15 to 25 percent per year, as shown in figure 1. It has been fairly stable. The three highest years in the data, however, derive from the Trump administration: the first year of his first term was about 22 percent; the first year of his second term was about 25 percent; and the current year, 2026, is so far at 21 percent. By comparison, the last year of the Biden administration was at 12 percent. So, as a share, Trump roughly doubled the application of the good cause exception. 
+
+
+<figure class="my-2"><img class="w-full rounded-lg shadow-sm" src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1790618047035-1hoijz.png" alt="figure 1 -- good cause shares" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">figure 1 -- good cause shares</figcaption></figure>
+
+
+	That rough pattern, in which administrations use the good cause exception more in their first year, appears quite regular over the series. A bump is evident in the first year for President Bush, Obama, and both Trump administrations. Biden’s first year is an exception—there we do not see a bump. There is also no apparent bump for presidents’ second terms, if they hold office for two consecutive terms. Instead, the regularity applies to party-switches. There, we might infer, presidents use the good cause to reverse their ideological opposites quickly.
+
+	So what is exceptional is not that Trump bumped the share of good cause in his first year, but the magnitude of the bump. He nearly doubled usage from Biden’s last year in office. The more typical bump is a few percentage points. 
+
+	Examining the count of rules in which good cause is applied shows that part of the story, too, is about overall activity level. Since 2000, the number of rules invoking the good cause exception has been decreasing, from about 500 per year to closer to 300 per year, as shown in figure 2. The share of rules, as above, stays a little under 20 percent through most of the series because overall rulemaking activity is decreasing proportionally. During the first year of President Trump’s second term, the number of invocations was 360, a figure lower than the average over the series (375/year), and lower than the average during President Obama’s terms (372/year). The count of invocations is not wholly remarkable. What stands out, instead, is a high number of invocations by President Trump relative to overall regulatory activity.
+
+
+<figure class="my-2"><img class="w-full rounded-lg shadow-sm" src="https://xlglobsjkfpfpkxlivki.supabase.co/storage/v1/object/public/blog-images/1790618085572-guj49q.png" alt="figure 2 -- good cause counts" class="w-full rounded-lg shadow-sm"><figcaption class="text-sm text-gray-600 mt-1 text-center font-['Inter']">figure 2 -- good cause counts</figcaption></figure>
+
+ 
+	That’s enough for now. Next up—the APA requires the invoking agency to “incorporate[] … a brief statement of reasons therefor.” So how are agencies justifying their invocations over time? Are the invocations in the second Trump administration different in rationale?</div>
+            </article>
+        </div>
+    </div>
+
+    <script src="/header.js"></script>
+
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_wfVnnyCEXjwV0azeFP8TlojFUL83RJ3j9WWlSxMV9VQ', {api_host: 'https://app.posthog.com'})
+
+        posthog.capture('post_viewed', {
+            post_title: "Whither good cause",
+            post_slug: "whither-good-cause",
+            post_id: '76',
+            post_featured: false,
+            post_date: '2026-09-28T17:55:17.017+00:00'
+        })
+    </script>
+</body>
+</html>
