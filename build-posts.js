@@ -433,7 +433,7 @@ function predictionsPageHtml(intro, snapshots) {
             <section>
                 <h2 class="text-xl font-normal text-black mb-3 font-['Space_Mono']">Methods in brief</h2>
                 <div class="text-black leading-relaxed font-['Inter']">
-                    Predictions come from <span class="font-['Space_Mono']">experience-6</span>, an ensemble of customized transformer-based models trained to learn the justices' preferences from party filings, lower-court decisions, oral argument, and amicus briefs. The model uses only information available up to the day of oral argument. Validated against a held-out term (OT2025), it reached TBA percent vote-level and TBA percent case-level accuracy; its uncertainty intervals are calibrated to capture the correct outcome about 90 percent of the time. <a href="/methods.html" class="post-link hover:underline">Full methodology</a>
+                    Predictions come from <span class="font-['Space_Mono']">experience-6</span>, an ensemble of customized transformer-based models trained to learn the justices' preferences from party filings, lower-court decisions, oral argument, and amicus briefs. The model uses only information available up to the day of oral argument. Validated against a held-out term (OT2025), it reached 89 percent vote-level and 91 percent case-level accuracy; its uncertainty intervals are calibrated to capture the correct outcome about 90 percent of the time. <a href="/methods.html" class="post-link hover:underline">Full methodology</a>
                 </div>
             </section>
             ${introHtml}

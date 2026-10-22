@@ -84,7 +84,7 @@ The build renders `predictions.html` from this data automatically:
 - Older terms collapse into their own sections. **Term rollover is automatic** — the first snapshot with a new term value rolls the page over; there is no manual archive procedure.
 - `predictions-ot25.html` is the frozen, hand-made archive of the pre-snapshot era (OT25), linked from the page footer via `PREDICTION_ARCHIVES` in `build-posts.js`; it should never need new entries.
 
-One-time schema setup in the Supabase dashboard SQL editor (then enable RLS and copy the `posts` table's policies):
+One-time schema setup in the Supabase dashboard SQL editor:
 ```sql
 CREATE TABLE prediction_snapshots (
   id serial primary key,
@@ -95,7 +95,25 @@ CREATE TABLE prediction_snapshots (
   note text,
   created_at timestamptz not null default now()
 );
+
+-- RLS: the build (anon key) must read; only a logged-in admin may write.
+-- Without the write policies, admin inserts fail with
+-- "new row violates row-level security policy for table prediction_snapshots".
+ALTER TABLE prediction_snapshots ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "public read snapshots" ON prediction_snapshots
+  FOR SELECT TO anon, authenticated USING (true);
+
+CREATE POLICY "auth insert snapshots" ON prediction_snapshots
+  FOR INSERT TO authenticated WITH CHECK (true);
+
+CREATE POLICY "auth update snapshots" ON prediction_snapshots
+  FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+
+CREATE POLICY "auth delete snapshots" ON prediction_snapshots
+  FOR DELETE TO authenticated USING (true);
 ```
+To check what a table currently has: `select * from pg_policies where tablename = 'prediction_snapshots';`
 
 ## Predictions Intro & Methods Content
 The editor form also manages two special content blobs, selected via checkboxes:
