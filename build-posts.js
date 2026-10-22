@@ -363,7 +363,7 @@ function snapshotBlock(s, { updatedLabel = false } = {}) {
   const meta = [termLabel(Number(s.term)), `${updatedLabel ? 'Updated ' : ''}${longDateOnly(s.snapshot_date)}`, s.model]
     .filter(Boolean).join(' · ')
   return `
-                <div class="mt-4 mb-2 font-['Space_Mono'] text-sm text-gray-600">${meta}</div>
+                <div class="mt-4 mb-2 text-sm text-gray-500 font-['Inter']">${meta}</div>
                 ${s.note ? `<div class="mb-2 text-black leading-relaxed font-['Inter']">${s.note}</div>` : ''}
                 <figure class="my-2"><img src="${s.image_url}" alt="Prediction snapshot, ${termLabel(Number(s.term))}, ${String(s.snapshot_date).slice(0, 10)}" loading="lazy" class="w-full rounded-lg shadow-sm"></figure>`
 }
