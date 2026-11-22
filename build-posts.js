@@ -374,7 +374,7 @@ function predictionsPageHtml(intro, snapshots) {
                 <h2 class="text-xl font-normal text-black mb-3 font-['Space_Mono']">Predictions summary</h2>${!intro ? '' : `
                 <article class="prose prose-lg max-w-none">
                     <div class="text-black leading-relaxed font-['Inter']">
-                        ${intro}
+                        ${styleContent(intro)}
                     </div>
                 </article>`}
             </section>`

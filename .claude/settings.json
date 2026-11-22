@@ -5,7 +5,9 @@
       "ClaudeInChromeDomain(localhost:8000)",
       "Bash(npm run *)",
       "Bash(pkill -f \"http.server 8000\")",
-      "Bash(pkill -f \"python3 -m http.server\")"
+      "Bash(pkill -f \"python3 -m http.server\")",
+      "Bash(grep -v \"node_modules\\\\|class=\\\\\"post-link\\\\|class=\\\\\"\\\\$1 post-link\\\\|posts/\")",
+      "Bash(grep -v 'class=\"post-link\\\\|class=\"$1 post-link')"
     ]
   }
 }
